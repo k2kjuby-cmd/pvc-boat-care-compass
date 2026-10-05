@@ -8,3 +8,11 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+# AGENTS
+
+- Site-wide editable values (logo, marketplace links, contacts, dealers page toggle) live in the single-row `site_settings` table, read via `getSiteSettings` server fn — so admins change them without code.
+- Public forms insert directly via RLS-limited anon INSERT (no SELECT) — keeps PII unreadable from the browser.
+- Use plain Postgres types/constraints only (no Supabase-specific features in app tables) — keeps DB portable to other hosting.
+- Each page uses `seo()` from `src/lib/site.ts` and `PageShell` for H1 + breadcrumbs (with JSON-LD) — consistent SEO.
+- sitemap.xml is a server route built from the request origin — no hardcoded domain.

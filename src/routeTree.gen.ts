@@ -10,22 +10,42 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DileryRouteImport } from './routes/dilery'
+import { Route as DlyaMasterskihRouteImport } from './routes/dlya-masterskih'
 import { Route as DostavkaIOplataRouteImport } from './routes/dostavka-i-oplata'
+import { Route as GdeKupitRouteImport } from './routes/gde-kupit'
 import { Route as KatalogRouteImport } from './routes/katalog'
 import { Route as KontaktyRouteImport } from './routes/kontakty'
 import { Route as OBrendeRouteImport } from './routes/o-brende'
 import { Route as OptovikamRouteImport } from './routes/optovikam'
 import { Route as PolitikaKonfidencialnostiRouteImport } from './routes/politika-konfidencialnosti'
 import { Route as PolzovatelskoeSoglashenieRouteImport } from './routes/polzovatelskoe-soglashenie'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SkoroRouteImport } from './routes/skoro'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DileryRoute = DileryRouteImport.update({
+  id: '/dilery',
+  path: '/dilery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DlyaMasterskihRoute = DlyaMasterskihRouteImport.update({
+  id: '/dlya-masterskih',
+  path: '/dlya-masterskih',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DostavkaIOplataRoute = DostavkaIOplataRouteImport.update({
   id: '/dostavka-i-oplata',
   path: '/dostavka-i-oplata',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GdeKupitRoute = GdeKupitRouteImport.update({
+  id: '/gde-kupit',
+  path: '/gde-kupit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KatalogRoute = KatalogRouteImport.update({
@@ -60,80 +80,125 @@ const PolzovatelskoeSoglashenieRoute =
     path: '/polzovatelskoe-soglashenie',
     getParentRoute: () => rootRouteImport,
   } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkoroRoute = SkoroRouteImport.update({
+  id: '/skoro',
+  path: '/skoro',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dilery': typeof DileryRoute
+  '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
+  '/gde-kupit': typeof GdeKupitRoute
   '/katalog': typeof KatalogRoute
   '/kontakty': typeof KontaktyRoute
   '/o-brende': typeof OBrendeRoute
   '/optovikam': typeof OptovikamRoute
   '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/skoro': typeof SkoroRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dilery': typeof DileryRoute
+  '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
+  '/gde-kupit': typeof GdeKupitRoute
   '/katalog': typeof KatalogRoute
   '/kontakty': typeof KontaktyRoute
   '/o-brende': typeof OBrendeRoute
   '/optovikam': typeof OptovikamRoute
   '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/skoro': typeof SkoroRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dilery': typeof DileryRoute
+  '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
+  '/gde-kupit': typeof GdeKupitRoute
   '/katalog': typeof KatalogRoute
   '/kontakty': typeof KontaktyRoute
   '/o-brende': typeof OBrendeRoute
   '/optovikam': typeof OptovikamRoute
   '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/skoro': typeof SkoroRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dilery'
+    | '/dlya-masterskih'
     | '/dostavka-i-oplata'
+    | '/gde-kupit'
     | '/katalog'
     | '/kontakty'
     | '/o-brende'
     | '/optovikam'
     | '/politika-konfidencialnosti'
     | '/polzovatelskoe-soglashenie'
+    | '/sitemap.xml'
+    | '/skoro'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dilery'
+    | '/dlya-masterskih'
     | '/dostavka-i-oplata'
+    | '/gde-kupit'
     | '/katalog'
     | '/kontakty'
     | '/o-brende'
     | '/optovikam'
     | '/politika-konfidencialnosti'
     | '/polzovatelskoe-soglashenie'
+    | '/sitemap.xml'
+    | '/skoro'
   id:
     | '__root__'
     | '/'
+    | '/dilery'
+    | '/dlya-masterskih'
     | '/dostavka-i-oplata'
+    | '/gde-kupit'
     | '/katalog'
     | '/kontakty'
     | '/o-brende'
     | '/optovikam'
     | '/politika-konfidencialnosti'
     | '/polzovatelskoe-soglashenie'
+    | '/sitemap.xml'
+    | '/skoro'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DileryRoute: typeof DileryRoute
+  DlyaMasterskihRoute: typeof DlyaMasterskihRoute
   DostavkaIOplataRoute: typeof DostavkaIOplataRoute
+  GdeKupitRoute: typeof GdeKupitRoute
   KatalogRoute: typeof KatalogRoute
   KontaktyRoute: typeof KontaktyRoute
   OBrendeRoute: typeof OBrendeRoute
   OptovikamRoute: typeof OptovikamRoute
   PolitikaKonfidencialnostiRoute: typeof PolitikaKonfidencialnostiRoute
   PolzovatelskoeSoglashenieRoute: typeof PolzovatelskoeSoglashenieRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SkoroRoute: typeof SkoroRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -145,11 +210,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dilery': {
+      id: '/dilery'
+      path: '/dilery'
+      fullPath: '/dilery'
+      preLoaderRoute: typeof DileryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dlya-masterskih': {
+      id: '/dlya-masterskih'
+      path: '/dlya-masterskih'
+      fullPath: '/dlya-masterskih'
+      preLoaderRoute: typeof DlyaMasterskihRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dostavka-i-oplata': {
       id: '/dostavka-i-oplata'
       path: '/dostavka-i-oplata'
       fullPath: '/dostavka-i-oplata'
       preLoaderRoute: typeof DostavkaIOplataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gde-kupit': {
+      id: '/gde-kupit'
+      path: '/gde-kupit'
+      fullPath: '/gde-kupit'
+      preLoaderRoute: typeof GdeKupitRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/katalog': {
@@ -194,18 +280,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PolzovatelskoeSoglashenieRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skoro': {
+      id: '/skoro'
+      path: '/skoro'
+      fullPath: '/skoro'
+      preLoaderRoute: typeof SkoroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DileryRoute: DileryRoute,
+  DlyaMasterskihRoute: DlyaMasterskihRoute,
   DostavkaIOplataRoute: DostavkaIOplataRoute,
+  GdeKupitRoute: GdeKupitRoute,
   KatalogRoute: KatalogRoute,
   KontaktyRoute: KontaktyRoute,
   OBrendeRoute: OBrendeRoute,
   OptovikamRoute: OptovikamRoute,
   PolitikaKonfidencialnostiRoute: PolitikaKonfidencialnostiRoute,
   PolzovatelskoeSoglashenieRoute: PolzovatelskoeSoglashenieRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SkoroRoute: SkoroRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
