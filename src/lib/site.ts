@@ -33,8 +33,8 @@ const EMPTY: SiteSettings = {
 };
 
 export const getSiteSettings = createServerFn({ method: "GET" }).handler(async () => {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+  const url = process.env["SUPABASE_URL"];
+  const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
   if (!url || !key) return EMPTY;
   const sb = createClient(url, key, { auth: { persistSession: false } });
   const { data } = await sb.from("site_settings").select("*").eq("id", 1).maybeSingle();

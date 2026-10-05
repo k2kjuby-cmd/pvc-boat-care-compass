@@ -15,7 +15,7 @@ import { seo } from "@/lib/site";
 
 export const Route = createFileRoute("/optovikam")({
   head: () => seo("Оптовикам", "Оптовые поставки средств ухода и ремонта ПВХ-лодок НеСдует для магазинов, прокатов, мастерских и дилеров. Оставьте заявку на прайс.", "/optovikam"),
-  validateSearch: (s: Record<string, unknown>) => ({ utm_source: typeof s.utm_source === "string" ? s.utm_source : undefined }),
+  validateSearch: (s: Record<string, unknown>): { utm_source?: string } => (typeof s["utm_source"] === "string" ? { utm_source: s["utm_source"] } : {}),
   component: Wholesale,
 });
 
@@ -56,8 +56,8 @@ function Wholesale() {
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const p = schema.safeParse(f);
-    if (!p.success) return toast.error(p.error.issues[0].message);
-    if (!consent) return toast.error("Нужно согласие на обработку персональных данных");
+    if (!p.success) { toast.error(p.error.issues[0]?.message ?? "Проверьте форму"); return; }
+    if (!consent) { toast.error("Нужно согласие на обработку персональных данных"); return; }
     const source = (new FormData(e.currentTarget).get("source") as string) || "optovikam";
     setBusy(true);
     const { error } = await supabase.from("wholesale_leads").insert({
@@ -70,7 +70,7 @@ function Wholesale() {
       consent: true,
     });
     setBusy(false);
-    if (error) return toast.error("Не удалось отправить заявку. Попробуйте позже.");
+    if (error) { toast.error("Не удалось отправить заявку. Попробуйте позже."); return; }
     setDone(true);
   }
 

@@ -18,12 +18,12 @@ export function SubscribeForm({ topic = "news", cta = "Подписаться" }
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     const p = schema.safeParse({ email });
-    if (!p.success) return toast.error(p.error.issues[0].message);
-    if (!consent) return toast.error("Нужно согласие на обработку персональных данных");
+    if (!p.success) { toast.error(p.error.issues[0]?.message ?? "Проверьте e-mail"); return; }
+    if (!consent) { toast.error("Нужно согласие на обработку персональных данных"); return; }
     setBusy(true);
     const { error } = await supabase.from("subscribers").insert({ email: p.data.email.toLowerCase(), topic, consent: true });
     setBusy(false);
-    if (error && error.code !== "23505") return toast.error("Не удалось отправить. Попробуйте позже.");
+    if (error && error.code !== "23505") { toast.error("Не удалось отправить. Попробуйте позже."); return; }
     setDone(true);
   }
 
