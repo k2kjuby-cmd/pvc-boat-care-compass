@@ -52,7 +52,7 @@ function Home() {
             <Link key={p.tag} to={p.soon ? "/skoro" : "/katalog"} search={p.soon ? undefined : { problema: p.tag }} className="group relative flex min-h-36 flex-col justify-between rounded-2xl border border-border bg-card p-5 transition hover:-translate-y-1 hover:border-primary">
               <p.icon className="h-8 w-8 text-primary" aria-hidden />
               <span className="font-display text-base leading-tight">{p.title}</span>
-              {p.soon && <span className="absolute right-3 top3 top-3 rounded-full bg-armor/20 px-2 py-0.5 text-[10px] uppercase text-armor">Скоро</span>}
+              {p.soon && <span className="absolute right-3 top-3 rounded-full bg-armor/20 px-2 py-0.5 text-[10px] uppercase text-armor">Скоро</span>}
             </Link>
           ))}
         </div>

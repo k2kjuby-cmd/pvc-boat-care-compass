@@ -10,33 +10,130 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DostavkaIOplataRouteImport } from './routes/dostavka-i-oplata'
+import { Route as KatalogRouteImport } from './routes/katalog'
+import { Route as KontaktyRouteImport } from './routes/kontakty'
+import { Route as OBrendeRouteImport } from './routes/o-brende'
+import { Route as OptovikamRouteImport } from './routes/optovikam'
+import { Route as PolitikaKonfidencialnostiRouteImport } from './routes/politika-konfidencialnosti'
+import { Route as PolzovatelskoeSoglashenieRouteImport } from './routes/polzovatelskoe-soglashenie'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DostavkaIOplataRoute = DostavkaIOplataRouteImport.update({
+  id: '/dostavka-i-oplata',
+  path: '/dostavka-i-oplata',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KatalogRoute = KatalogRouteImport.update({
+  id: '/katalog',
+  path: '/katalog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KontaktyRoute = KontaktyRouteImport.update({
+  id: '/kontakty',
+  path: '/kontakty',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OBrendeRoute = OBrendeRouteImport.update({
+  id: '/o-brende',
+  path: '/o-brende',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OptovikamRoute = OptovikamRouteImport.update({
+  id: '/optovikam',
+  path: '/optovikam',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PolitikaKonfidencialnostiRoute =
+  PolitikaKonfidencialnostiRouteImport.update({
+    id: '/politika-konfidencialnosti',
+    path: '/politika-konfidencialnosti',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const PolzovatelskoeSoglashenieRoute =
+  PolzovatelskoeSoglashenieRouteImport.update({
+    id: '/polzovatelskoe-soglashenie',
+    path: '/polzovatelskoe-soglashenie',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dostavka-i-oplata': typeof DostavkaIOplataRoute
+  '/katalog': typeof KatalogRoute
+  '/kontakty': typeof KontaktyRoute
+  '/o-brende': typeof OBrendeRoute
+  '/optovikam': typeof OptovikamRoute
+  '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
+  '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dostavka-i-oplata': typeof DostavkaIOplataRoute
+  '/katalog': typeof KatalogRoute
+  '/kontakty': typeof KontaktyRoute
+  '/o-brende': typeof OBrendeRoute
+  '/optovikam': typeof OptovikamRoute
+  '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
+  '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dostavka-i-oplata': typeof DostavkaIOplataRoute
+  '/katalog': typeof KatalogRoute
+  '/kontakty': typeof KontaktyRoute
+  '/o-brende': typeof OBrendeRoute
+  '/optovikam': typeof OptovikamRoute
+  '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
+  '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/dostavka-i-oplata'
+    | '/katalog'
+    | '/kontakty'
+    | '/o-brende'
+    | '/optovikam'
+    | '/politika-konfidencialnosti'
+    | '/polzovatelskoe-soglashenie'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/dostavka-i-oplata'
+    | '/katalog'
+    | '/kontakty'
+    | '/o-brende'
+    | '/optovikam'
+    | '/politika-konfidencialnosti'
+    | '/polzovatelskoe-soglashenie'
+  id:
+    | '__root__'
+    | '/'
+    | '/dostavka-i-oplata'
+    | '/katalog'
+    | '/kontakty'
+    | '/o-brende'
+    | '/optovikam'
+    | '/politika-konfidencialnosti'
+    | '/polzovatelskoe-soglashenie'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DostavkaIOplataRoute: typeof DostavkaIOplataRoute
+  KatalogRoute: typeof KatalogRoute
+  KontaktyRoute: typeof KontaktyRoute
+  OBrendeRoute: typeof OBrendeRoute
+  OptovikamRoute: typeof OptovikamRoute
+  PolitikaKonfidencialnostiRoute: typeof PolitikaKonfidencialnostiRoute
+  PolzovatelskoeSoglashenieRoute: typeof PolzovatelskoeSoglashenieRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +145,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dostavka-i-oplata': {
+      id: '/dostavka-i-oplata'
+      path: '/dostavka-i-oplata'
+      fullPath: '/dostavka-i-oplata'
+      preLoaderRoute: typeof DostavkaIOplataRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/katalog': {
+      id: '/katalog'
+      path: '/katalog'
+      fullPath: '/katalog'
+      preLoaderRoute: typeof KatalogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kontakty': {
+      id: '/kontakty'
+      path: '/kontakty'
+      fullPath: '/kontakty'
+      preLoaderRoute: typeof KontaktyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/o-brende': {
+      id: '/o-brende'
+      path: '/o-brende'
+      fullPath: '/o-brende'
+      preLoaderRoute: typeof OBrendeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/optovikam': {
+      id: '/optovikam'
+      path: '/optovikam'
+      fullPath: '/optovikam'
+      preLoaderRoute: typeof OptovikamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politika-konfidencialnosti': {
+      id: '/politika-konfidencialnosti'
+      path: '/politika-konfidencialnosti'
+      fullPath: '/politika-konfidencialnosti'
+      preLoaderRoute: typeof PolitikaKonfidencialnostiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/polzovatelskoe-soglashenie': {
+      id: '/polzovatelskoe-soglashenie'
+      path: '/polzovatelskoe-soglashenie'
+      fullPath: '/polzovatelskoe-soglashenie'
+      preLoaderRoute: typeof PolzovatelskoeSoglashenieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DostavkaIOplataRoute: DostavkaIOplataRoute,
+  KatalogRoute: KatalogRoute,
+  KontaktyRoute: KontaktyRoute,
+  OBrendeRoute: OBrendeRoute,
+  OptovikamRoute: OptovikamRoute,
+  PolitikaKonfidencialnostiRoute: PolitikaKonfidencialnostiRoute,
+  PolzovatelskoeSoglashenieRoute: PolzovatelskoeSoglashenieRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
