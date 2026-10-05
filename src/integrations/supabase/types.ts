@@ -14,7 +14,132 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      site_settings: {
+        Row: {
+          avito_url: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          contact_telegram: string | null
+          dealers_page_enabled: boolean
+          id: number
+          logo_url: string | null
+          own_shop_url: string | null
+          ozon_url: string | null
+          updated_at: string
+          wildberries_url: string | null
+          yandex_market_url: string | null
+        }
+        Insert: {
+          avito_url?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          contact_telegram?: string | null
+          dealers_page_enabled?: boolean
+          id?: number
+          logo_url?: string | null
+          own_shop_url?: string | null
+          ozon_url?: string | null
+          updated_at?: string
+          wildberries_url?: string | null
+          yandex_market_url?: string | null
+        }
+        Update: {
+          avito_url?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          contact_telegram?: string | null
+          dealers_page_enabled?: boolean
+          id?: number
+          logo_url?: string | null
+          own_shop_url?: string | null
+          ozon_url?: string | null
+          updated_at?: string
+          wildberries_url?: string | null
+          yandex_market_url?: string | null
+        }
+        Relationships: []
+      }
+      subscribers: {
+        Row: {
+          consent: boolean
+          created_at: string
+          email: string
+          id: string
+          topic: string
+        }
+        Insert: {
+          consent: boolean
+          created_at?: string
+          email: string
+          id?: string
+          topic?: string
+        }
+        Update: {
+          consent?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          topic?: string
+        }
+        Relationships: []
+      }
+      wholesale_leads: {
+        Row: {
+          admin_note: string | null
+          business_type: string
+          city: string
+          comment: string | null
+          company: string
+          consent: boolean
+          created_at: string
+          id: string
+          inn: string | null
+          messenger_contact: string | null
+          messenger_type: string | null
+          name: string
+          phone: string
+          sales_links: string | null
+          source: string | null
+          status: Database["public"]["Enums"]["lead_status"]
+        }
+        Insert: {
+          admin_note?: string | null
+          business_type: string
+          city: string
+          comment?: string | null
+          company: string
+          consent: boolean
+          created_at?: string
+          id?: string
+          inn?: string | null
+          messenger_contact?: string | null
+          messenger_type?: string | null
+          name: string
+          phone: string
+          sales_links?: string | null
+          source?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+        }
+        Update: {
+          admin_note?: string | null
+          business_type?: string
+          city?: string
+          comment?: string | null
+          company?: string
+          consent?: boolean
+          created_at?: string
+          id?: string
+          inn?: string | null
+          messenger_contact?: string | null
+          messenger_type?: string | null
+          name?: string
+          phone?: string
+          sales_links?: string | null
+          source?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +148,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      lead_status: "new" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +275,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      lead_status: ["new", "approved", "rejected"],
+    },
   },
 } as const
