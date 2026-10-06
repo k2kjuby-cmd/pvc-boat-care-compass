@@ -14,6 +14,298 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          sort: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          sort?: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          sort?: number
+        }
+        Relationships: []
+      }
+      problems: {
+        Row: {
+          category_slug: string | null
+          icon: string
+          id: string
+          is_soon: boolean
+          slug: string
+          sort: number
+          title: string
+        }
+        Insert: {
+          category_slug?: string | null
+          icon?: string
+          id?: string
+          is_soon?: boolean
+          slug: string
+          sort?: number
+          title: string
+        }
+        Update: {
+          category_slug?: string | null
+          icon?: string
+          id?: string
+          is_soon?: boolean
+          slug?: string
+          sort?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      product_images: {
+        Row: {
+          alt: string | null
+          id: string
+          is_render: boolean
+          kind: string
+          product_id: string
+          sort: number
+          url: string
+        }
+        Insert: {
+          alt?: string | null
+          id?: string
+          is_render?: boolean
+          kind?: string
+          product_id: string
+          sort?: number
+          url: string
+        }
+        Update: {
+          alt?: string | null
+          id?: string
+          is_render?: boolean
+          kind?: string
+          product_id?: string
+          sort?: number
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_lines: {
+        Row: {
+          color: string
+          id: string
+          name: string
+          slug: string
+          sort: number
+        }
+        Insert: {
+          color?: string
+          id?: string
+          name: string
+          slug: string
+          sort?: number
+        }
+        Update: {
+          color?: string
+          id?: string
+          name?: string
+          slug?: string
+          sort?: number
+        }
+        Relationships: []
+      }
+      product_recommendations: {
+        Row: {
+          product_id: string
+          recommended_id: string
+          sort: number
+        }
+        Insert: {
+          product_id: string
+          recommended_id: string
+          sort?: number
+        }
+        Update: {
+          product_id?: string
+          recommended_id?: string
+          sort?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_recommendations_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_recommendations_recommended_id_fkey"
+            columns: ["recommended_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_variants: {
+        Row: {
+          avito_url: string | null
+          gross_weight_g: number | null
+          id: string
+          image_url: string | null
+          ozon_url: string | null
+          price: number | null
+          product_id: string
+          sku: string | null
+          sold_on_site: boolean
+          sort: number
+          stock: number | null
+          volume_ml: number | null
+          weight_g: number | null
+          wildberries_url: string | null
+          yandex_market_url: string | null
+        }
+        Insert: {
+          avito_url?: string | null
+          gross_weight_g?: number | null
+          id?: string
+          image_url?: string | null
+          ozon_url?: string | null
+          price?: number | null
+          product_id: string
+          sku?: string | null
+          sold_on_site?: boolean
+          sort?: number
+          stock?: number | null
+          volume_ml?: number | null
+          weight_g?: number | null
+          wildberries_url?: string | null
+          yandex_market_url?: string | null
+        }
+        Update: {
+          avito_url?: string | null
+          gross_weight_g?: number | null
+          id?: string
+          image_url?: string | null
+          ozon_url?: string | null
+          price?: number | null
+          product_id?: string
+          sku?: string | null
+          sold_on_site?: boolean
+          sort?: number
+          stock?: number | null
+          volume_ml?: number | null
+          weight_g?: number | null
+          wildberries_url?: string | null
+          yandex_market_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_variants_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          category_id: string | null
+          composition: string | null
+          created_at: string
+          cure_time: string | null
+          faq: Json
+          has_dilution_calc: boolean
+          id: string
+          is_hit: boolean
+          line_id: string | null
+          name: string
+          purpose: string | null
+          short_description: string | null
+          slug: string
+          sort: number
+          status: Database["public"]["Enums"]["product_status"]
+          suitable_for: string[]
+          updated_at: string
+          usage_steps: Json
+          video_url: string | null
+          warnings: string | null
+        }
+        Insert: {
+          category_id?: string | null
+          composition?: string | null
+          created_at?: string
+          cure_time?: string | null
+          faq?: Json
+          has_dilution_calc?: boolean
+          id?: string
+          is_hit?: boolean
+          line_id?: string | null
+          name: string
+          purpose?: string | null
+          short_description?: string | null
+          slug: string
+          sort?: number
+          status?: Database["public"]["Enums"]["product_status"]
+          suitable_for?: string[]
+          updated_at?: string
+          usage_steps?: Json
+          video_url?: string | null
+          warnings?: string | null
+        }
+        Update: {
+          category_id?: string | null
+          composition?: string | null
+          created_at?: string
+          cure_time?: string | null
+          faq?: Json
+          has_dilution_calc?: boolean
+          id?: string
+          is_hit?: boolean
+          line_id?: string | null
+          name?: string
+          purpose?: string | null
+          short_description?: string | null
+          slug?: string
+          sort?: number
+          status?: Database["public"]["Enums"]["product_status"]
+          suitable_for?: string[]
+          updated_at?: string
+          usage_steps?: Json
+          video_url?: string | null
+          warnings?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_line_id_fkey"
+            columns: ["line_id"]
+            isOneToOne: false
+            referencedRelation: "product_lines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_settings: {
         Row: {
           avito_url: string | null
@@ -65,6 +357,7 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          product_id: string | null
           topic: string
         }
         Insert: {
@@ -72,6 +365,7 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
+          product_id?: string | null
           topic?: string
         }
         Update: {
@@ -79,7 +373,34 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+          product_id?: string | null
           topic?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscribers_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: []
       }
@@ -145,10 +466,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      claim_first_admin: { Args: never; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      app_role: "admin"
       lead_status: "new" | "approved" | "rejected"
+      product_status: "published" | "soon" | "hidden"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -276,7 +606,9 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin"],
       lead_status: ["new", "approved", "rejected"],
+      product_status: ["published", "soon", "hidden"],
     },
   },
 } as const
