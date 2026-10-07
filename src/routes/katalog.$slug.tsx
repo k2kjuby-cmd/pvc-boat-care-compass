@@ -84,7 +84,7 @@ function ProductPage() {
   const isSoon = p.status === "soon";
   const video = safeEmbed(p.video_url);
   const suitable = PRODUCT_TYPES.filter((t) => p.suitable_for.includes(t.value));
-  const crumbs = [{ label: "Каталог", to: "/katalog" }, ...(p.category ? [{ label: p.category.name, to: `/katalog?zadacha=${p.category.slug}` }] : []), { label: p.name }];
+  const crumbs = [{ label: "Каталог", to: "/katalog" }, ...(p.category ? [{ label: p.category.name, to: "/katalog", search: { zadacha: p.category.slug } }] : []), { label: p.name }];
 
   return (
     <PageShell title={p.name} crumbs={crumbs}>

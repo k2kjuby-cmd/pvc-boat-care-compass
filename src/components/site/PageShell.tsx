@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 
-type Crumb = { label: string; to?: string };
+type Crumb = { label: string; to?: string; search?: Record<string, string> };
 
 export function PageShell({ title, lead, crumbs, children }: { title: string; lead?: string; crumbs: Crumb[]; children?: ReactNode }) {
   const all: Crumb[] = [{ label: "Главная", to: "/" }, ...crumbs];
@@ -17,7 +17,7 @@ export function PageShell({ title, lead, crumbs, children }: { title: string; le
         <ol className="flex flex-wrap items-center gap-1">
           {all.map((c, i) => (
             <li key={i} className="flex items-center gap-1">
-              {c.to && i < all.length - 1 ? <Link to={c.to} className="hover:text-foreground">{c.label}</Link> : <span aria-current="page" className="text-foreground">{c.label}</span>}
+              {c.to && i < all.length - 1 ? <Link to={c.to} search={c.search as never} className="hover:text-foreground">{c.label}</Link> : <span aria-current="page" className="text-foreground">{c.label}</span>}
               {i < all.length - 1 && <ChevronRight className="h-3 w-3" aria-hidden />}
             </li>
           ))}
