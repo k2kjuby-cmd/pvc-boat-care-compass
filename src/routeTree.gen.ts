@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DileryRouteImport } from './routes/dilery'
 import { Route as DlyaMasterskihRouteImport } from './routes/dlya-masterskih'
 import { Route as DostavkaIOplataRouteImport } from './routes/dostavka-i-oplata'
@@ -22,12 +24,23 @@ import { Route as PolitikaKonfidencialnostiRouteImport } from './routes/politika
 import { Route as PolzovatelskoeSoglashenieRouteImport } from './routes/polzovatelskoe-soglashenie'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SkoroRouteImport } from './routes/skoro'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as KatalogIndexRouteImport } from './routes/katalog.index'
 import { Route as KatalogSlugRouteImport } from './routes/katalog.$slug'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DileryRoute = DileryRouteImport.update({
@@ -92,6 +105,11 @@ const SkoroRoute = SkoroRouteImport.update({
   path: '/skoro',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const KatalogIndexRoute = KatalogIndexRouteImport.update({
   id: '/katalog/',
   path: '/katalog/',
@@ -102,9 +120,15 @@ const KatalogSlugRoute = KatalogSlugRouteImport.update({
   path: '/katalog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/dilery': typeof DileryRoute
   '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
@@ -117,11 +141,14 @@ export interface FileRoutesByFullPath {
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/dilery': typeof DileryRoute
   '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
@@ -136,10 +163,13 @@ export interface FileRoutesByTo {
   '/skoro': typeof SkoroRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog': typeof KatalogIndexRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/dilery': typeof DileryRoute
   '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
@@ -152,13 +182,16 @@ export interface FileRoutesById {
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/dilery'
     | '/dlya-masterskih'
     | '/dostavka-i-oplata'
@@ -171,11 +204,14 @@ export interface FileRouteTypes {
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/admin'
     | '/katalog/$slug'
     | '/katalog/'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/dilery'
     | '/dlya-masterskih'
     | '/dostavka-i-oplata'
@@ -190,9 +226,12 @@ export interface FileRouteTypes {
     | '/skoro'
     | '/katalog/$slug'
     | '/katalog'
+    | '/admin'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/auth'
     | '/dilery'
     | '/dlya-masterskih'
     | '/dostavka-i-oplata'
@@ -205,12 +244,16 @@ export interface FileRouteTypes {
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/_authenticated/admin'
     | '/katalog/$slug'
     | '/katalog/'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   DileryRoute: typeof DileryRoute
   DlyaMasterskihRoute: typeof DlyaMasterskihRoute
   DostavkaIOplataRoute: typeof DostavkaIOplataRoute
@@ -234,6 +277,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dilery': {
@@ -320,6 +377,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SkoroRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/katalog/': {
       id: '/katalog/'
       path: '/katalog'
@@ -334,11 +398,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KatalogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   DileryRoute: DileryRoute,
   DlyaMasterskihRoute: DlyaMasterskihRoute,
   DostavkaIOplataRoute: DostavkaIOplataRoute,
