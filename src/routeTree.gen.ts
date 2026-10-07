@@ -14,7 +14,7 @@ import { Route as DileryRouteImport } from './routes/dilery'
 import { Route as DlyaMasterskihRouteImport } from './routes/dlya-masterskih'
 import { Route as DostavkaIOplataRouteImport } from './routes/dostavka-i-oplata'
 import { Route as GdeKupitRouteImport } from './routes/gde-kupit'
-import { Route as KatalogRouteImport } from './routes/katalog'
+import { Route as KalkulyatorRazvedeniyaRouteImport } from './routes/kalkulyator-razvedeniya'
 import { Route as KontaktyRouteImport } from './routes/kontakty'
 import { Route as OBrendeRouteImport } from './routes/o-brende'
 import { Route as OptovikamRouteImport } from './routes/optovikam'
@@ -22,6 +22,8 @@ import { Route as PolitikaKonfidencialnostiRouteImport } from './routes/politika
 import { Route as PolzovatelskoeSoglashenieRouteImport } from './routes/polzovatelskoe-soglashenie'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SkoroRouteImport } from './routes/skoro'
+import { Route as KatalogIndexRouteImport } from './routes/katalog.index'
+import { Route as KatalogSlugRouteImport } from './routes/katalog.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -48,9 +50,9 @@ const GdeKupitRoute = GdeKupitRouteImport.update({
   path: '/gde-kupit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const KatalogRoute = KatalogRouteImport.update({
-  id: '/katalog',
-  path: '/katalog',
+const KalkulyatorRazvedeniyaRoute = KalkulyatorRazvedeniyaRouteImport.update({
+  id: '/kalkulyator-razvedeniya',
+  path: '/kalkulyator-razvedeniya',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KontaktyRoute = KontaktyRouteImport.update({
@@ -90,6 +92,16 @@ const SkoroRoute = SkoroRouteImport.update({
   path: '/skoro',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KatalogIndexRoute = KatalogIndexRouteImport.update({
+  id: '/katalog/',
+  path: '/katalog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KatalogSlugRoute = KatalogSlugRouteImport.update({
+  id: '/katalog/$slug',
+  path: '/katalog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -97,7 +109,7 @@ export interface FileRoutesByFullPath {
   '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
   '/gde-kupit': typeof GdeKupitRoute
-  '/katalog': typeof KatalogRoute
+  '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
   '/kontakty': typeof KontaktyRoute
   '/o-brende': typeof OBrendeRoute
   '/optovikam': typeof OptovikamRoute
@@ -105,6 +117,8 @@ export interface FileRoutesByFullPath {
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/katalog/$slug': typeof KatalogSlugRoute
+  '/katalog/': typeof KatalogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -112,7 +126,7 @@ export interface FileRoutesByTo {
   '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
   '/gde-kupit': typeof GdeKupitRoute
-  '/katalog': typeof KatalogRoute
+  '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
   '/kontakty': typeof KontaktyRoute
   '/o-brende': typeof OBrendeRoute
   '/optovikam': typeof OptovikamRoute
@@ -120,6 +134,8 @@ export interface FileRoutesByTo {
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/katalog/$slug': typeof KatalogSlugRoute
+  '/katalog': typeof KatalogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -128,7 +144,7 @@ export interface FileRoutesById {
   '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
   '/gde-kupit': typeof GdeKupitRoute
-  '/katalog': typeof KatalogRoute
+  '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
   '/kontakty': typeof KontaktyRoute
   '/o-brende': typeof OBrendeRoute
   '/optovikam': typeof OptovikamRoute
@@ -136,6 +152,8 @@ export interface FileRoutesById {
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/katalog/$slug': typeof KatalogSlugRoute
+  '/katalog/': typeof KatalogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -145,7 +163,7 @@ export interface FileRouteTypes {
     | '/dlya-masterskih'
     | '/dostavka-i-oplata'
     | '/gde-kupit'
-    | '/katalog'
+    | '/kalkulyator-razvedeniya'
     | '/kontakty'
     | '/o-brende'
     | '/optovikam'
@@ -153,6 +171,8 @@ export interface FileRouteTypes {
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/katalog/$slug'
+    | '/katalog/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -160,7 +180,7 @@ export interface FileRouteTypes {
     | '/dlya-masterskih'
     | '/dostavka-i-oplata'
     | '/gde-kupit'
-    | '/katalog'
+    | '/kalkulyator-razvedeniya'
     | '/kontakty'
     | '/o-brende'
     | '/optovikam'
@@ -168,6 +188,8 @@ export interface FileRouteTypes {
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/katalog/$slug'
+    | '/katalog'
   id:
     | '__root__'
     | '/'
@@ -175,7 +197,7 @@ export interface FileRouteTypes {
     | '/dlya-masterskih'
     | '/dostavka-i-oplata'
     | '/gde-kupit'
-    | '/katalog'
+    | '/kalkulyator-razvedeniya'
     | '/kontakty'
     | '/o-brende'
     | '/optovikam'
@@ -183,6 +205,8 @@ export interface FileRouteTypes {
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/katalog/$slug'
+    | '/katalog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -191,7 +215,7 @@ export interface RootRouteChildren {
   DlyaMasterskihRoute: typeof DlyaMasterskihRoute
   DostavkaIOplataRoute: typeof DostavkaIOplataRoute
   GdeKupitRoute: typeof GdeKupitRoute
-  KatalogRoute: typeof KatalogRoute
+  KalkulyatorRazvedeniyaRoute: typeof KalkulyatorRazvedeniyaRoute
   KontaktyRoute: typeof KontaktyRoute
   OBrendeRoute: typeof OBrendeRoute
   OptovikamRoute: typeof OptovikamRoute
@@ -199,6 +223,8 @@ export interface RootRouteChildren {
   PolzovatelskoeSoglashenieRoute: typeof PolzovatelskoeSoglashenieRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SkoroRoute: typeof SkoroRoute
+  KatalogSlugRoute: typeof KatalogSlugRoute
+  KatalogIndexRoute: typeof KatalogIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -238,11 +264,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GdeKupitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/katalog': {
-      id: '/katalog'
-      path: '/katalog'
-      fullPath: '/katalog'
-      preLoaderRoute: typeof KatalogRouteImport
+    '/kalkulyator-razvedeniya': {
+      id: '/kalkulyator-razvedeniya'
+      path: '/kalkulyator-razvedeniya'
+      fullPath: '/kalkulyator-razvedeniya'
+      preLoaderRoute: typeof KalkulyatorRazvedeniyaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kontakty': {
@@ -294,6 +320,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SkoroRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/katalog/': {
+      id: '/katalog/'
+      path: '/katalog'
+      fullPath: '/katalog/'
+      preLoaderRoute: typeof KatalogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/katalog/$slug': {
+      id: '/katalog/$slug'
+      path: '/katalog/$slug'
+      fullPath: '/katalog/$slug'
+      preLoaderRoute: typeof KatalogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -303,7 +343,7 @@ const rootRouteChildren: RootRouteChildren = {
   DlyaMasterskihRoute: DlyaMasterskihRoute,
   DostavkaIOplataRoute: DostavkaIOplataRoute,
   GdeKupitRoute: GdeKupitRoute,
-  KatalogRoute: KatalogRoute,
+  KalkulyatorRazvedeniyaRoute: KalkulyatorRazvedeniyaRoute,
   KontaktyRoute: KontaktyRoute,
   OBrendeRoute: OBrendeRoute,
   OptovikamRoute: OptovikamRoute,
@@ -311,6 +351,8 @@ const rootRouteChildren: RootRouteChildren = {
   PolzovatelskoeSoglashenieRoute: PolzovatelskoeSoglashenieRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SkoroRoute: SkoroRoute,
+  KatalogSlugRoute: KatalogSlugRoute,
+  KatalogIndexRoute: KatalogIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
