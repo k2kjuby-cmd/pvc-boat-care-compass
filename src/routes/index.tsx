@@ -1,24 +1,26 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Scissors, Waves, Wind, Sparkles, ShieldAlert, ArrowRight, Search, Package, Wrench, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Search, Package, Wrench, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import hero from "@/assets/hero.jpg";
 import { seo, settingsQuery } from "@/lib/site";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { catalogQuery, taxonomyQuery } from "@/lib/catalog";
+import { ProductCard } from "@/components/catalog/ProductCard";
+import { StepIcon } from "@/components/catalog/StepIcon";
 import { SubscribeForm } from "@/components/site/SubscribeForm";
 import { WhereToBuyButtons, useHasMarketplaces } from "@/components/site/WhereToBuy";
 
 export const Route = createFileRoute("/")({
   head: () => seo("Лодка не травит", "НеСдует — система ухода и защиты ПВХ-лодок: ремонт проколов и швов, герметизация, очистка и защита. Опт для магазинов, прокатов и мастерских.", "/"),
-  loader: ({ context }) => context.queryClient.ensureQueryData(settingsQuery),
+  loader: async ({ context }) => {
+    await Promise.all([
+      context.queryClient.ensureQueryData(settingsQuery),
+      context.queryClient.ensureQueryData(catalogQuery),
+      context.queryClient.ensureQueryData(taxonomyQuery),
+    ]);
+  },
   component: Home,
 });
-
-const problems = [
-  { icon: Scissors, title: "Прокол или порез", tag: "prokol" },
-  { icon: Waves, title: "Травит шов", tag: "shov" },
-  { icon: Wind, title: "Лодка сдувается понемногу", tag: "germetik" },
-  { icon: Sparkles, title: "Грязная и выцветшая лодка", tag: "uhod" },
-  { icon: ShieldAlert, title: "Плесень", tag: "plesen", soon: true },
-];
 
 const steps = [
   { icon: Search, title: "Найдите проблему", text: "Выберите, что случилось с лодкой." },
@@ -29,6 +31,9 @@ const steps = [
 
 function Home() {
   const hasShops = useHasMarketplaces();
+  const { data: tax } = useSuspenseQuery(taxonomyQuery);
+  const { data: catalog } = useSuspenseQuery(catalogQuery);
+  const hits = catalog.filter((p) => p.is_hit).slice(0, 8);
   return (
     <>
       <section className="relative overflow-hidden">
@@ -48,11 +53,11 @@ function Home() {
       <section className="container-site py-20">
         <h2 className="text-3xl uppercase md:text-4xl">Какая у вас проблема?</h2>
         <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-5">
-          {problems.map((p) => (
-            <Link key={p.tag} to={p.soon ? "/skoro" : "/katalog"} search={p.soon ? {} : { problema: p.tag }} className="group relative flex min-h-36 flex-col justify-between rounded-2xl border border-border bg-card p-5 transition hover:-translate-y-1 hover:border-primary">
-              <p.icon className="h-8 w-8 text-primary" aria-hidden />
+          {tax.problems.map((p) => (
+            <Link key={p.slug} to={p.is_soon || !p.category_slug ? "/skoro" : "/katalog"} search={p.is_soon || !p.category_slug ? {} : { zadacha: p.category_slug }} className="group relative flex min-h-36 flex-col justify-between rounded-2xl border border-border bg-card p-5 transition hover:-translate-y-1 hover:border-primary">
+              <StepIcon name={p.icon} className="h-8 w-8 text-primary" />
               <span className="font-display text-base leading-tight">{p.title}</span>
-              {p.soon && <span className="absolute right-3 top-3 rounded-full bg-armor/20 px-2 py-0.5 text-[10px] uppercase text-armor">Скоро</span>}
+              {p.is_soon && <span className="absolute right-3 top-3 rounded-full bg-armor/20 px-2 py-0.5 text-[10px] uppercase text-armor">Скоро</span>}
             </Link>
           ))}
         </div>
@@ -63,12 +68,11 @@ function Home() {
           <h2 className="text-3xl uppercase md:text-4xl">Хиты</h2>
           <Link to="/katalog" className="text-sm text-primary">Весь каталог →</Link>
         </div>
-        <div className="mt-8 flex flex-wrap gap-2">
-          {[["Lite", "bg-lite/15 text-lite"], ["Pro", "bg-pro/15 text-pro"], ["Armor", "bg-armor/15 text-armor"]].map(([n, c]) => (
-            <span key={n} className={`rounded-full px-4 py-1.5 font-display text-sm ${c}`}>{n}</span>
-          ))}
-        </div>
-        <p className="mt-4 text-muted-foreground">Линейка заплаток Lite, Pro и Armor появится в каталоге совсем скоро.</p>
+        {hits.length > 0 ? (
+          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5">
+            {hits.map((p) => <ProductCard key={p.id} p={p} />)}
+          </div>
+        ) : null}
       </section>
 
       <section className="container-site py-20">

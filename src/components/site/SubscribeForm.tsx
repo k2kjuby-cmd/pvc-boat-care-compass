@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const schema = z.object({ email: z.string().trim().email("Проверьте e-mail").max(254) });
 
-export function SubscribeForm({ topic = "news", cta = "Подписаться" }: { topic?: "news" | "antimold"; cta?: string }) {
+export function SubscribeForm({ topic = "news", cta = "Подписаться", productId }: { topic?: "news" | "antimold" | "product"; cta?: string; productId?: string }) {
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -21,7 +21,7 @@ export function SubscribeForm({ topic = "news", cta = "Подписаться" }
     if (!p.success) { toast.error(p.error.issues[0]?.message ?? "Проверьте e-mail"); return; }
     if (!consent) { toast.error("Нужно согласие на обработку персональных данных"); return; }
     setBusy(true);
-    const { error } = await supabase.from("subscribers").insert({ email: p.data.email.toLowerCase(), topic, consent: true });
+    const { error } = await supabase.from("subscribers").insert({ email: p.data.email.toLowerCase(), topic, consent: true, product_id: productId ?? null });
     setBusy(false);
     if (error && error.code !== "23505") { toast.error("Не удалось отправить. Попробуйте позже."); return; }
     setDone(true);
