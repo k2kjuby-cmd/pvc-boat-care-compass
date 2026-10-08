@@ -28,6 +28,10 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as KatalogIndexRouteImport } from './routes/katalog.index'
 import { Route as KatalogSlugRouteImport } from './routes/katalog.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminImportRouteImport } from './routes/_authenticated/admin.import'
+import { Route as AuthenticatedAdminNastrojkiRouteImport } from './routes/_authenticated/admin.nastrojki'
+import { Route as AuthenticatedAdminZayavkiRouteImport } from './routes/_authenticated/admin.zayavki'
+import { Route as AuthenticatedAdminTovarIdRouteImport } from './routes/_authenticated/admin.tovar.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -125,6 +129,30 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminImportRoute =
+  AuthenticatedAdminImportRouteImport.update({
+    id: '/import',
+    path: '/import',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminNastrojkiRoute =
+  AuthenticatedAdminNastrojkiRouteImport.update({
+    id: '/nastrojki',
+    path: '/nastrojki',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminZayavkiRoute =
+  AuthenticatedAdminZayavkiRouteImport.update({
+    id: '/zayavki',
+    path: '/zayavki',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminTovarIdRoute =
+  AuthenticatedAdminTovarIdRouteImport.update({
+    id: '/tovar/$id',
+    path: '/tovar/$id',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -144,7 +172,11 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
+  '/admin/import': typeof AuthenticatedAdminImportRoute
+  '/admin/nastrojki': typeof AuthenticatedAdminNastrojkiRoute
+  '/admin/zayavki': typeof AuthenticatedAdminZayavkiRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/admin/tovar/$id': typeof AuthenticatedAdminTovarIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -163,7 +195,11 @@ export interface FileRoutesByTo {
   '/skoro': typeof SkoroRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog': typeof KatalogIndexRoute
+  '/admin/import': typeof AuthenticatedAdminImportRoute
+  '/admin/nastrojki': typeof AuthenticatedAdminNastrojkiRoute
+  '/admin/zayavki': typeof AuthenticatedAdminZayavkiRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/tovar/$id': typeof AuthenticatedAdminTovarIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -185,7 +221,11 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
+  '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
+  '/_authenticated/admin/nastrojki': typeof AuthenticatedAdminNastrojkiRoute
+  '/_authenticated/admin/zayavki': typeof AuthenticatedAdminZayavkiRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/admin/tovar/$id': typeof AuthenticatedAdminTovarIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -207,7 +247,11 @@ export interface FileRouteTypes {
     | '/admin'
     | '/katalog/$slug'
     | '/katalog/'
+    | '/admin/import'
+    | '/admin/nastrojki'
+    | '/admin/zayavki'
     | '/admin/'
+    | '/admin/tovar/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -226,7 +270,11 @@ export interface FileRouteTypes {
     | '/skoro'
     | '/katalog/$slug'
     | '/katalog'
+    | '/admin/import'
+    | '/admin/nastrojki'
+    | '/admin/zayavki'
     | '/admin'
+    | '/admin/tovar/$id'
   id:
     | '__root__'
     | '/'
@@ -247,7 +295,11 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/katalog/$slug'
     | '/katalog/'
+    | '/_authenticated/admin/import'
+    | '/_authenticated/admin/nastrojki'
+    | '/_authenticated/admin/zayavki'
     | '/_authenticated/admin/'
+    | '/_authenticated/admin/tovar/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -405,15 +457,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/import': {
+      id: '/_authenticated/admin/import'
+      path: '/import'
+      fullPath: '/admin/import'
+      preLoaderRoute: typeof AuthenticatedAdminImportRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/nastrojki': {
+      id: '/_authenticated/admin/nastrojki'
+      path: '/nastrojki'
+      fullPath: '/admin/nastrojki'
+      preLoaderRoute: typeof AuthenticatedAdminNastrojkiRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/zayavki': {
+      id: '/_authenticated/admin/zayavki'
+      path: '/zayavki'
+      fullPath: '/admin/zayavki'
+      preLoaderRoute: typeof AuthenticatedAdminZayavkiRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/tovar/$id': {
+      id: '/_authenticated/admin/tovar/$id'
+      path: '/tovar/$id'
+      fullPath: '/admin/tovar/$id'
+      preLoaderRoute: typeof AuthenticatedAdminTovarIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminImportRoute: typeof AuthenticatedAdminImportRoute
+  AuthenticatedAdminNastrojkiRoute: typeof AuthenticatedAdminNastrojkiRoute
+  AuthenticatedAdminZayavkiRoute: typeof AuthenticatedAdminZayavkiRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminTovarIdRoute: typeof AuthenticatedAdminTovarIdRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminImportRoute: AuthenticatedAdminImportRoute,
+  AuthenticatedAdminNastrojkiRoute: AuthenticatedAdminNastrojkiRoute,
+  AuthenticatedAdminZayavkiRoute: AuthenticatedAdminZayavkiRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminTovarIdRoute: AuthenticatedAdminTovarIdRoute,
 }
 
 const AuthenticatedAdminRouteWithChildren =
