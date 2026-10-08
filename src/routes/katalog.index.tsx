@@ -24,9 +24,9 @@ export const Route = createFileRoute("/katalog/")({
   component: Catalog,
 });
 
-function Chip({ active, children, ...rest }: { active: boolean; children: React.ReactNode } & React.ComponentProps<typeof Link>) {
+function Chip({ active, children, search }: { active: boolean; children: React.ReactNode; to: "/katalog"; search: Search }) {
   return (
-    <Link {...rest} className={`rounded-full border px-4 py-1.5 text-sm transition ${active ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:text-foreground"}`}>
+    <Link to="/katalog" search={search} className={`rounded-full border px-4 py-1.5 text-sm transition ${active ? "border-primary bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:text-foreground"}`}>
       {children}
     </Link>
   );

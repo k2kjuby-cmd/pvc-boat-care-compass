@@ -40,7 +40,7 @@ function ImportExport() {
     try {
       const XLSX = await import("xlsx");
       const wb = XLSX.read(await f.arrayBuffer());
-      const rows = XLSX.utils.sheet_to_json<Row>(wb.Sheets[wb.SheetNames[0]!]!, { defval: null });
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]!]!, { defval: null }) as Row[];
       const [{ data: lines }, { data: cats }] = await Promise.all([supabase.from("product_lines").select("id,slug"), supabase.from("categories").select("id,slug")]);
       const ids = new Map<string, string>();
       for (const [i, r] of rows.entries()) {
