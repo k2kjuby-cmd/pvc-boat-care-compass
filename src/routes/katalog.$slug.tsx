@@ -81,7 +81,7 @@ function ProductPage() {
     ...photos.map((i) => ({ url: i.url, alt: i.alt ?? p.name, is_render: i.is_render })),
   ];
   const [main, ...thumbs] = gallery;
-  const packaging = p.images.filter((i) => i.kind === "label" || i.kind === "package");
+  const packaging = visibleImages.filter((i) => i.kind === "label" || i.kind === "package");
   const markets = v ? MARKETS.filter((m) => v[m.key]) : [];
   const isSoon = p.status === "soon";
   const video = safeEmbed(p.video_url);
