@@ -72,22 +72,44 @@ function ProductPage() {
   if (!p) return null;
 
   const v = p.variants[vi];
-  const photos = p.images.filter((i) => i.kind === "photo");
+  // Узкие этикетки не показываем в галерее (правило бренда: только широкая этикетка и фото тары)
+  const visibleImages = p.images.filter((i) => !(i.alt ?? "").toLowerCase().includes("узк"));
+  const photos = visibleImages.filter((i) => i.kind === "photo");
   const variantImg = v?.image_url ?? null;
   const gallery: { url: string; alt: string; is_render: boolean }[] = [
     ...(variantImg ? [{ url: variantImg, alt: `${p.name} ${v ? formatVolume(v) : ""}`, is_render: false }] : []),
     ...photos.map((i) => ({ url: i.url, alt: i.alt ?? p.name, is_render: i.is_render })),
   ];
   const [main, ...thumbs] = gallery;
-  const packaging = p.images.filter((i) => i.kind === "label" || i.kind === "package");
+  const packaging = visibleImages.filter((i) => i.kind === "label" || i.kind === "package");
   const markets = v ? MARKETS.filter((m) => v[m.key]) : [];
   const isSoon = p.status === "soon";
   const video = safeEmbed(p.video_url);
   const suitable = PRODUCT_TYPES.filter((t) => p.suitable_for.includes(t.value));
   const crumbs = [{ label: "Каталог", to: "/katalog" }, ...(p.category ? [{ label: p.category.name, to: "/katalog", search: { zadacha: p.category.slug } }] : []), { label: p.name }];
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: p.name,
+    description: p.short_description ?? undefined,
+    image: gallery.map((g) => g.url).filter((u) => u.startsWith("https://")),
+    brand: { "@type": "Brand", name: "НеСдует" },
+    ...(v?.price != null
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: Number(v.price),
+            priceCurrency: "RUB",
+            availability: "https://schema.org/InStock",
+          },
+        }
+      : {}),
+  };
+
   return (
     <PageShell title={p.name} crumbs={crumbs}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="grid gap-8 lg:grid-cols-2">
         <div>
           {main ? (
