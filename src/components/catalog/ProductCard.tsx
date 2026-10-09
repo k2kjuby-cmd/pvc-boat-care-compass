@@ -38,8 +38,8 @@ export function ProductCard({ p }: { p: CardProduct }) {
         <div className="min-h-5"><LineBadge line={p.line} /></div>
         <h3 className="font-display text-base leading-tight">{p.name}</h3>
         {p.short_description && <p className="line-clamp-1 text-sm text-muted-foreground">{p.short_description}</p>}
-        <div className="mt-auto flex items-center justify-between gap-2 pt-3">
-          <span className="font-display text-lg">{p.minPrice != null ? `от ${formatPrice(p.minPrice)}` : ""}</span>
+        <div className="mt-auto flex flex-col items-start gap-2 pt-3 sm:flex-row sm:items-center sm:justify-between">
+          <span className="whitespace-nowrap font-display text-lg">{p.minPrice != null ? `от ${formatPrice(p.minPrice)}` : ""}</span>
           <Button asChild size="sm" variant="secondary">
             <Link to="/katalog/$slug" params={{ slug: p.slug }}>Подробнее</Link>
           </Button>
