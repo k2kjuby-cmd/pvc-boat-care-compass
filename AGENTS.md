@@ -16,3 +16,7 @@
 - Use plain Postgres types/constraints only (no Supabase-specific features in app tables) — keeps DB portable to other hosting.
 - Each page uses `seo()` from `src/lib/site.ts` and `PageShell` for H1 + breadcrumbs (with JSON-LD) — consistent SEO.
 - sitemap.xml is a server route built from the request origin — no hardcoded domain.
+- Catalog data (products, lines, categories, variants, images, recommendations, problems) is read publicly via server fns in `src/lib/catalog.ts`; admin writes go through the browser client under RLS `has_role(admin)` — no service key in app code.
+- Admin lives under `/_authenticated/admin`; the first signed-in user claims admin via `claim_first_admin()`, later admins are granted in `user_roles`.
+- Product images live in a private bucket and are stored as long-lived signed URLs, because public buckets are blocked in this workspace.
+- Product card sections render only when their field has data; empty-field placeholders appear only in admin inputs.
