@@ -72,7 +72,9 @@ function ProductPage() {
   if (!p) return null;
 
   const v = p.variants[vi];
-  const photos = p.images.filter((i) => i.kind === "photo");
+  // Узкие этикетки не показываем в галерее (правило бренда: только широкая этикетка и фото тары)
+  const visibleImages = p.images.filter((i) => !(i.alt ?? "").toLowerCase().includes("узк"));
+  const photos = visibleImages.filter((i) => i.kind === "photo");
   const variantImg = v?.image_url ?? null;
   const gallery: { url: string; alt: string; is_render: boolean }[] = [
     ...(variantImg ? [{ url: variantImg, alt: `${p.name} ${v ? formatVolume(v) : ""}`, is_render: false }] : []),
