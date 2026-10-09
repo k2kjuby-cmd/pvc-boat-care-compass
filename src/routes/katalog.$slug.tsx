@@ -88,8 +88,28 @@ function ProductPage() {
   const suitable = PRODUCT_TYPES.filter((t) => p.suitable_for.includes(t.value));
   const crumbs = [{ label: "Каталог", to: "/katalog" }, ...(p.category ? [{ label: p.category.name, to: "/katalog", search: { zadacha: p.category.slug } }] : []), { label: p.name }];
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: p.name,
+    description: p.short_description ?? undefined,
+    image: gallery.map((g) => g.url).filter((u) => u.startsWith("https://")),
+    brand: { "@type": "Brand", name: "НеСдует" },
+    ...(v?.price != null
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: Number(v.price),
+            priceCurrency: "RUB",
+            availability: "https://schema.org/InStock",
+          },
+        }
+      : {}),
+  };
+
   return (
     <PageShell title={p.name} crumbs={crumbs}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="grid gap-8 lg:grid-cols-2">
         <div>
           {main ? (
