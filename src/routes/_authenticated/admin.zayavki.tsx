@@ -3,8 +3,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { seo } from "@/lib/site";
 
-export const Route = createFileRoute("/_authenticated/admin/zayavki")({ component: Leads });
+export const Route = createFileRoute("/_authenticated/admin/zayavki")({ head: () => seo("Заявки и обращения", "Оптовые заявки и сообщения покупателей НеСдует.", "/admin/zayavki"), component: Leads });
 
 const ST = { new: "Новая", approved: "Одобрена", rejected: "Отклонена" } as const;
 const BT: Record<string, string> = { shop: "Магазин", rental: "Прокат", workshop: "Мастерская", dealer: "Дилер", other: "Другое" };
@@ -14,6 +15,14 @@ function Leads() {
   const { data } = useQuery({
     queryKey: ["admin-leads"],
     queryFn: async () => (await supabase.from("wholesale_leads").select("*").order("created_at", { ascending: false })).data ?? [],
+  });
+  const { data: messages = [] } = useQuery({
+    queryKey: ["admin-contact-messages"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("contact_messages").select("*").order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
   });
   async function setStatus(id: string, status: "approved" | "rejected") {
     const { error } = await supabase.from("wholesale_leads").update({ status }).eq("id", id);
@@ -35,6 +44,7 @@ function Leads() {
               <span>{l.messenger_type ? `${l.messenger_type}: ${l.messenger_contact ?? ""}` : ""}</span>
               <span>Тип: {BT[l.business_type] ?? l.business_type}{l.inn ? ` · ИНН ${l.inn}` : ""}</span>
               <span>Источник: {l.source ?? "—"}</span>
+               <span>Рассылка: {l.newsletter_consent ? "согласие получено" : "нет согласия"}</span>
               {l.sales_links && <span className="md:col-span-2">Площадки: {l.sales_links}</span>}
               {l.comment && <span className="md:col-span-2">Комментарий: {l.comment}</span>}
             </div>
@@ -47,6 +57,16 @@ function Leads() {
           </div>
         ))}
       </div>
+      <section className="mt-12">
+        <h2 className="text-2xl uppercase">Обратная связь</h2>
+        {messages.length === 0 && <p className="mt-6 text-muted-foreground">Сообщений пока нет.</p>}
+        <div className="mt-6 space-y-3">{messages.map(m => <article key={m.id} className="rounded-lg border border-border bg-card p-5">
+          <h3 className="text-lg">{m.name}</h3><p className="mt-2 text-sm text-muted-foreground">{m.phone}{m.email && ` · ${m.email}`}{m.city && ` · ${m.city}`}</p>
+          {m.messenger_contact && <p className="mt-2 text-sm">{m.messenger_type?.toUpperCase()}: {m.messenger_contact}</p>}
+          <p className="mt-3 whitespace-pre-wrap break-words">{m.message}</p>
+          <p className="mt-3 text-xs text-muted-foreground">{new Date(m.created_at).toLocaleString("ru-RU")} · Обработка данных: {m.consent ? "согласие получено" : "нет согласия"} · Рассылка: {m.newsletter_consent ? "согласие получено" : "нет согласия"}</p>
+        </article>)}</div>
+      </section>
     </div>
   );
 }
