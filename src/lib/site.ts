@@ -24,19 +24,36 @@ export type SiteSettings = {
   contact_phone: string | null;
   contact_email: string | null;
   contact_telegram: string | null;
+  contact_max: string | null;
+  contact_whatsapp: string | null;
+  seller_name: string | null;
+  seller_status: string | null;
+  seller_inn: string | null;
+  shipping_city: string | null;
+  postal_address: string | null;
 };
 
 const EMPTY: SiteSettings = {
   logo_url: null, ozon_url: null, wildberries_url: null, avito_url: null,
   yandex_market_url: null, own_shop_url: null, dealers_page_enabled: false,
   contact_phone: null, contact_email: null, contact_telegram: null,
+  contact_max: null, contact_whatsapp: null, seller_name: null, seller_status: null,
+  seller_inn: null, shipping_city: null, postal_address: null,
 };
 
 export const getSiteSettings = createServerFn({ method: "GET" }).handler(async () => {
   const url = process.env["SUPABASE_URL"];
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
   if (!url || !key) return EMPTY;
-  const sb = createClient(url, key, { auth: { persistSession: false } });
+  const sb = createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: { fetch: (input, init) => {
+      const headers = new Headers(init?.headers);
+      if (key.startsWith("sb_")) headers.delete("Authorization");
+      headers.set("apikey", key);
+      return fetch(input, { ...init, headers });
+    } },
+  });
   const { data } = await sb.from("site_settings").select("*").eq("id", 1).maybeSingle();
   return (data as SiteSettings | null) ?? EMPTY;
 });
