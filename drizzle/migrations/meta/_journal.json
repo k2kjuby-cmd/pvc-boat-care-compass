@@ -15,6 +15,13 @@
       "when": 1791278142562,
       "tag": "0001_catalog_and_admin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791630832103,
+      "tag": "0002_seller_contacts_and_form_consents",
+      "breakpoints": true
     }
   ]
 }
