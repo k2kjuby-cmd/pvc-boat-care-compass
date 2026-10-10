@@ -20,3 +20,5 @@
 - Admin lives under `/_authenticated/admin`; the first signed-in user claims admin via `claim_first_admin()`, later admins are granted in `user_roles`.
 - Product images live in a private bucket and are stored as long-lived signed URLs, because public buckets are blocked in this workspace.
 - Product card sections render only when their field has data; empty-field placeholders appear only in admin inputs.
+- Contact details and legal operator identity reuse `site_settings`; Organization is generated from those settings in the root head — edits propagate across every page.
+- Public contact messages live in `contact_messages` with insert-only public access and admin-only reads; shared consent controls persist data and newsletter permissions separately — inquiries stay private and mailing consent remains optional outside newsletter signup.

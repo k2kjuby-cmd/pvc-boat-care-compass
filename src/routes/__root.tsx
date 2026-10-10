@@ -15,6 +15,8 @@ import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { settingsQuery } from "@/lib/site";
+import { organization } from "@/lib/contact-rules";
 
 function NotFoundComponent() {
   return (
@@ -77,7 +79,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  loader: ({ context }) => context.queryClient.ensureQueryData(settingsQuery),
+  head: ({ loaderData }) => ({
+    scripts: loaderData ? [{ type: "application/ld+json", children: JSON.stringify(organization(loaderData)) }] : [],
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },

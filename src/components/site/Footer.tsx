@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Logo } from "./Header";
 import { settingsQuery } from "@/lib/site";
+import { ContactDetails } from "./ContactDetails";
 
 const cols = [
   { title: "Продукция", links: [
@@ -28,12 +29,7 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-3 text-sm text-muted-foreground">Система ухода и защиты ПВХ-лодок.</p>
-          {(data?.contact_phone || data?.contact_email) && (
-            <div className="mt-4 space-y-1 text-sm">
-              {data.contact_phone && <a className="block hover:text-primary" href={`tel:${data.contact_phone}`}>{data.contact_phone}</a>}
-              {data.contact_email && <a className="block hover:text-primary" href={`mailto:${data.contact_email}`}>{data.contact_email}</a>}
-            </div>
-          )}
+          <div className="mt-4"><ContactDetails compact /></div>
         </div>
         {cols.map((c) => (
           <div key={c.title}>
@@ -52,7 +48,7 @@ export function Footer() {
       <div className="border-t border-border">
         <div className="container-site flex flex-col gap-2 py-5 text-xs text-muted-foreground md:flex-row md:justify-between">
           <span>© {new Date().getFullYear()} НеСдует</span>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
             <Link to="/politika-konfidencialnosti" className="hover:text-foreground">Политика конфиденциальности</Link>
             <Link to="/polzovatelskoe-soglashenie" className="hover:text-foreground">Пользовательское соглашение</Link>
           </div>
