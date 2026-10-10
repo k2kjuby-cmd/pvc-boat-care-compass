@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { ConsentFields } from "@/components/site/ConsentFields";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { seo } from "@/lib/site";
 
@@ -47,8 +47,9 @@ const schema = z.object({
 
 function Wholesale() {
   const { utm_source } = Route.useSearch();
-  const [f, setF] = useState({ name: "", company: "", city: "", phone: "", messenger_type: "telegram", messenger_contact: "", business_type: "", inn: "", sales_links: "", comment: "" });
+  const [f, setF] = useState({ name: "", company: "", city: "", phone: "", messenger_type: "max", messenger_contact: "", business_type: "", inn: "", sales_links: "", comment: "" });
   const [consent, setConsent] = useState(false);
+  const [newsletter, setNewsletter] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
@@ -68,6 +69,7 @@ function Wholesale() {
       comment: p.data.comment || null,
       source: source.slice(0, 200),
       consent: true,
+      newsletter_consent: newsletter,
     });
     setBusy(false);
     if (error) { toast.error("Не удалось отправить заявку. Попробуйте позже."); return; }
@@ -148,10 +150,7 @@ function Wholesale() {
             <Field label="ИНН (необязательно)"><Input inputMode="numeric" value={f.inn} onChange={set("inn")} /></Field>
             <Field label="Ссылки на площадки продаж"><Input value={f.sales_links} onChange={set("sales_links")} placeholder="Сайт, Ozon, Авито…" /></Field>
             <div className="md:col-span-2"><Field label="Комментарий"><Textarea rows={4} value={f.comment} onChange={set("comment")} /></Field></div>
-            <label className="flex items-start gap-2 text-sm text-muted-foreground md:col-span-2">
-              <Checkbox checked={consent} onCheckedChange={(v) => setConsent(v === true)} className="mt-0.5" />
-              <span>Я согласен на обработку персональных данных в соответствии с <Link to="/politika-konfidencialnosti" className="underline">политикой конфиденциальности</Link></span>
-            </label>
+            <div className="md:col-span-2"><ConsentFields consent={consent} newsletter={newsletter} onConsent={setConsent} onNewsletter={setNewsletter} /></div>
             <div className="md:col-span-2"><Button type="submit" size="lg" disabled={busy} className="shadow-glow">{busy ? "Отправляем…" : "Отправить заявку"}</Button></div>
           </form>
         )}

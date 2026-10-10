@@ -35,6 +35,51 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          city: string | null
+          consent: boolean
+          created_at: string
+          email: string | null
+          id: string
+          message: string
+          messenger_contact: string | null
+          messenger_type: string | null
+          name: string
+          newsletter_consent: boolean
+          phone: string
+          source: string
+        }
+        Insert: {
+          city?: string | null
+          consent: boolean
+          created_at?: string
+          email?: string | null
+          id?: string
+          message: string
+          messenger_contact?: string | null
+          messenger_type?: string | null
+          name: string
+          newsletter_consent?: boolean
+          phone: string
+          source?: string
+        }
+        Update: {
+          city?: string | null
+          consent?: boolean
+          created_at?: string
+          email?: string | null
+          id?: string
+          message?: string
+          messenger_contact?: string | null
+          messenger_type?: string | null
+          name?: string
+          newsletter_consent?: boolean
+          phone?: string
+          source?: string
+        }
+        Relationships: []
+      }
       problems: {
         Row: {
           category_slug: string | null
@@ -310,13 +355,20 @@ export type Database = {
         Row: {
           avito_url: string | null
           contact_email: string | null
+          contact_max: string | null
           contact_phone: string | null
           contact_telegram: string | null
+          contact_whatsapp: string | null
           dealers_page_enabled: boolean
           id: number
           logo_url: string | null
           own_shop_url: string | null
           ozon_url: string | null
+          postal_address: string | null
+          seller_inn: string | null
+          seller_name: string | null
+          seller_status: string | null
+          shipping_city: string | null
           updated_at: string
           wildberries_url: string | null
           yandex_market_url: string | null
@@ -324,13 +376,20 @@ export type Database = {
         Insert: {
           avito_url?: string | null
           contact_email?: string | null
+          contact_max?: string | null
           contact_phone?: string | null
           contact_telegram?: string | null
+          contact_whatsapp?: string | null
           dealers_page_enabled?: boolean
           id?: number
           logo_url?: string | null
           own_shop_url?: string | null
           ozon_url?: string | null
+          postal_address?: string | null
+          seller_inn?: string | null
+          seller_name?: string | null
+          seller_status?: string | null
+          shipping_city?: string | null
           updated_at?: string
           wildberries_url?: string | null
           yandex_market_url?: string | null
@@ -338,13 +397,20 @@ export type Database = {
         Update: {
           avito_url?: string | null
           contact_email?: string | null
+          contact_max?: string | null
           contact_phone?: string | null
           contact_telegram?: string | null
+          contact_whatsapp?: string | null
           dealers_page_enabled?: boolean
           id?: number
           logo_url?: string | null
           own_shop_url?: string | null
           ozon_url?: string | null
+          postal_address?: string | null
+          seller_inn?: string | null
+          seller_name?: string | null
+          seller_status?: string | null
+          shipping_city?: string | null
           updated_at?: string
           wildberries_url?: string | null
           yandex_market_url?: string | null
@@ -357,6 +423,7 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          newsletter_consent: boolean
           product_id: string | null
           topic: string
         }
@@ -365,6 +432,7 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
+          newsletter_consent?: boolean
           product_id?: string | null
           topic?: string
         }
@@ -373,6 +441,7 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+          newsletter_consent?: boolean
           product_id?: string | null
           topic?: string
         }
@@ -418,6 +487,7 @@ export type Database = {
           messenger_contact: string | null
           messenger_type: string | null
           name: string
+          newsletter_consent: boolean
           phone: string
           sales_links: string | null
           source: string | null
@@ -436,6 +506,7 @@ export type Database = {
           messenger_contact?: string | null
           messenger_type?: string | null
           name: string
+          newsletter_consent?: boolean
           phone: string
           sales_links?: string | null
           source?: string | null
@@ -454,6 +525,7 @@ export type Database = {
           messenger_contact?: string | null
           messenger_type?: string | null
           name?: string
+          newsletter_consent?: boolean
           phone?: string
           sales_links?: string | null
           source?: string | null
