@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { productQuery, formatPrice, formatVolume, PRODUCT_TYPES, type ProductImage } from "@/lib/catalog";
 import { seo } from "@/lib/site";
+import { DealerPrice } from "@/components/catalog/DealerPrice";
 
 export const Route = createFileRoute("/katalog/$slug")({
   loader: async ({ context, params }) => {
@@ -152,6 +153,7 @@ function ProductPage() {
           )}
 
           {v?.price != null && <div className="mt-6 font-display text-4xl">{formatPrice(Number(v.price))}</div>}
+          {!isSoon && v && <DealerPrice key={v.id} variantId={v.id} />}
 
           {isSoon ? (
             <div className="mt-6 rounded-2xl border border-armor/40 bg-card p-5">
@@ -167,11 +169,11 @@ function ProductPage() {
               )}
               {markets.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {markets.map((m) => (
+                  {markets.map((m) => v?.[m.key] ? (
                     <Button key={m.key} asChild variant="outline" className="bg-card">
-                      <a href={v![m.key]!} target="_blank" rel="noopener noreferrer">Купить на {m.name} <ExternalLink className="h-4 w-4" /></a>
+                      <a href={v[m.key] ?? undefined} target="_blank" rel="noopener noreferrer">Купить на {m.name} <ExternalLink className="h-4 w-4" /></a>
                     </Button>
-                  ))}
+                  ) : null)}
                 </div>
               )}
             </div>
