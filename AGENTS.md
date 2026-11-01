@@ -22,3 +22,5 @@
 - Product card sections render only when their field has data; empty-field placeholders appear only in admin inputs.
 - Contact details and legal operator identity reuse `site_settings`; Organization is generated from those settings in the root head — edits propagate across every page.
 - Public contact messages live in `contact_messages` with insert-only public access and admin-only reads; shared consent controls persist data and newsletter permissions separately — inquiries stay private and mailing consent remains optional outside newsletter signup.
+- Retail prices are persisted by database triggers from the product reference grid unless a variant is manually overridden; use pricing.ts for matching admin previews and tests.
+- Wholesale configuration and costs live in admin-only variant_wholesale, with dealer_accounts linked to approved leads; dealer_quote returns only safe calculated prices after checking the caller, so private costs never enter public or dealer exports.

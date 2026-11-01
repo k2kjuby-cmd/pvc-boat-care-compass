@@ -36,6 +36,7 @@ function Settings() {
   return (
     <div className="max-w-xl space-y-4">
       <h1 className="text-2xl uppercase">Настройки сайта</h1>
+      <div className="space-y-1.5"><Label>Налог и комиссия платёжной системы, %</Label><Input aria-label="Налог и комиссия платёжной системы, %" type="number" min="0" max="99" step="0.1" value={s.payment_tax_percent} onChange={e=>setS({...s,payment_tax_percent:Number(e.target.value)})}/></div>
       {FIELDS.map(([k, label]) => (
         <div key={k} className="space-y-1.5">
            <Label htmlFor={`setting-${k}`}>{label}</Label>

@@ -12,6 +12,7 @@ const TABS = [
   { to: "/admin", label: "Товары", exact: true },
   { to: "/admin/import", label: "Импорт / экспорт" },
   { to: "/admin/zayavki", label: "Заявки" },
+  { to: "/admin/opt", label: "Опт" },
   { to: "/admin/nastrojki", label: "Настройки" },
 ] as const;
 

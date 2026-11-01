@@ -80,6 +80,45 @@ export type Database = {
         }
         Relationships: []
       }
+      dealer_accounts: {
+        Row: {
+          approved: boolean
+          created_at: string
+          lead_id: string
+          manual_level_id: string | null
+          user_id: string
+        }
+        Insert: {
+          approved?: boolean
+          created_at?: string
+          lead_id: string
+          manual_level_id?: string | null
+          user_id: string
+        }
+        Update: {
+          approved?: boolean
+          created_at?: string
+          lead_id?: string
+          manual_level_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dealer_accounts_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dealer_accounts_manual_level_id_fkey"
+            columns: ["manual_level_id"]
+            isOneToOne: false
+            referencedRelation: "wholesale_levels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       problems: {
         Row: {
           category_slug: string | null
@@ -214,6 +253,7 @@ export type Database = {
           ozon_url: string | null
           price: number | null
           product_id: string
+          retail_override: boolean
           sku: string | null
           sold_on_site: boolean
           sort: number
@@ -231,6 +271,7 @@ export type Database = {
           ozon_url?: string | null
           price?: number | null
           product_id: string
+          retail_override?: boolean
           sku?: string | null
           sold_on_site?: boolean
           sort?: number
@@ -248,6 +289,7 @@ export type Database = {
           ozon_url?: string | null
           price?: number | null
           product_id?: string
+          retail_override?: boolean
           sku?: string | null
           sold_on_site?: boolean
           sort?: number
@@ -269,6 +311,7 @@ export type Database = {
       }
       products: {
         Row: {
+          auto_pricing: boolean
           category_id: string | null
           composition: string | null
           created_at: string
@@ -279,7 +322,10 @@ export type Database = {
           is_hit: boolean
           line_id: string | null
           name: string
+          pricing_step_percent: number
           purpose: string | null
+          reference_price: number | null
+          reference_volume_ml: number | null
           short_description: string | null
           slug: string
           sort: number
@@ -291,6 +337,7 @@ export type Database = {
           warnings: string | null
         }
         Insert: {
+          auto_pricing?: boolean
           category_id?: string | null
           composition?: string | null
           created_at?: string
@@ -301,7 +348,10 @@ export type Database = {
           is_hit?: boolean
           line_id?: string | null
           name: string
+          pricing_step_percent?: number
           purpose?: string | null
+          reference_price?: number | null
+          reference_volume_ml?: number | null
           short_description?: string | null
           slug: string
           sort?: number
@@ -313,6 +363,7 @@ export type Database = {
           warnings?: string | null
         }
         Update: {
+          auto_pricing?: boolean
           category_id?: string | null
           composition?: string | null
           created_at?: string
@@ -323,7 +374,10 @@ export type Database = {
           is_hit?: boolean
           line_id?: string | null
           name?: string
+          pricing_step_percent?: number
           purpose?: string | null
+          reference_price?: number | null
+          reference_volume_ml?: number | null
           short_description?: string | null
           slug?: string
           sort?: number
@@ -364,6 +418,7 @@ export type Database = {
           logo_url: string | null
           own_shop_url: string | null
           ozon_url: string | null
+          payment_tax_percent: number
           postal_address: string | null
           seller_inn: string | null
           seller_name: string | null
@@ -385,6 +440,7 @@ export type Database = {
           logo_url?: string | null
           own_shop_url?: string | null
           ozon_url?: string | null
+          payment_tax_percent?: number
           postal_address?: string | null
           seller_inn?: string | null
           seller_name?: string | null
@@ -406,6 +462,7 @@ export type Database = {
           logo_url?: string | null
           own_shop_url?: string | null
           ozon_url?: string | null
+          payment_tax_percent?: number
           postal_address?: string | null
           seller_inn?: string | null
           seller_name?: string | null
@@ -473,6 +530,44 @@ export type Database = {
         }
         Relationships: []
       }
+      variant_wholesale: {
+        Row: {
+          base_price: number | null
+          cost_price: number | null
+          max_discount_percent: number | null
+          minimum_margin_percent: number
+          minimum_quantity: number
+          ozon_price: number | null
+          variant_id: string
+        }
+        Insert: {
+          base_price?: number | null
+          cost_price?: number | null
+          max_discount_percent?: number | null
+          minimum_margin_percent?: number
+          minimum_quantity?: number
+          ozon_price?: number | null
+          variant_id: string
+        }
+        Update: {
+          base_price?: number | null
+          cost_price?: number | null
+          max_discount_percent?: number | null
+          minimum_margin_percent?: number
+          minimum_quantity?: number
+          ozon_price?: number | null
+          variant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "variant_wholesale_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: true
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       wholesale_leads: {
         Row: {
           admin_note: string | null
@@ -533,12 +628,59 @@ export type Database = {
         }
         Relationships: []
       }
+      wholesale_levels: {
+        Row: {
+          discount_percent: number
+          id: string
+          manual_only: boolean
+          name: string
+          quantity_multiplier: number | null
+          sort: number
+        }
+        Insert: {
+          discount_percent: number
+          id?: string
+          manual_only?: boolean
+          name: string
+          quantity_multiplier?: number | null
+          sort?: number
+        }
+        Update: {
+          discount_percent?: number
+          id?: string
+          manual_only?: boolean
+          name?: string
+          quantity_multiplier?: number | null
+          sort?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      admin_account_choices: {
+        Args: never
+        Returns: {
+          email: string
+          user_id: string
+        }[]
+      }
+      calculate_retail_price: {
+        Args: {
+          _reference_price: number
+          _reference_volume: number
+          _step: number
+          _volume: number
+        }
+        Returns: number
+      }
       claim_first_admin: { Args: never; Returns: boolean }
+      dealer_quote: {
+        Args: { _quantity: number; _variant_id: string }
+        Returns: Json
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
