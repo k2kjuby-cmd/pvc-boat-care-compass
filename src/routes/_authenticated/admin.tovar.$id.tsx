@@ -11,9 +11,12 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PRODUCT_TYPES, type UsageStep, type Faq } from "@/lib/catalog";
 import { ICONS } from "@/components/catalog/StepIcon";
+import { WholesaleFields } from "@/components/catalog/WholesaleFields";
+import { retailPrice, wholesalePrice, type WholesaleRule } from "@/lib/pricing";
+import { seo } from "@/lib/site";
 import type { Database } from "@/integrations/supabase/types";
 
-export const Route = createFileRoute("/_authenticated/admin/tovar/$id")({ component: Editor });
+export const Route = createFileRoute("/_authenticated/admin/tovar/$id")({ head: () => seo("Редактирование товара", "Цены, фасовки и описание товара НеСдует.", "/admin/tovar"), component: Editor });
 
 type P = Database["public"]["Tables"]["products"]["Row"];
 type V = Database["public"]["Tables"]["product_variants"]["Row"];
@@ -31,6 +34,8 @@ function Editor() {
   const [variants, setVariants] = useState<Partial<V>[]>([]);
   const [images, setImages] = useState<I[]>([]);
   const [recs, setRecs] = useState<string[]>([]);
+  const [wholesale, setWholesale] = useState<Record<string, WholesaleRule>>({});
+  const priceMeta = useQuery({ queryKey: ["admin-pricing"], queryFn: async () => { const [l,t] = await Promise.all([supabase.from("wholesale_levels").select("*").order("sort"),supabase.from("site_settings").select("payment_tax_percent").eq("id",1).single()]); return { levels:l.data??[], tax:t.data?.payment_tax_percent??6 }; } });
   const [busy, setBusy] = useState(false);
 
   const meta = useQuery({
@@ -56,6 +61,7 @@ function Editor() {
       ]);
       if (prod) setP(prod);
       setVariants(vs ?? []);
+      if (vs?.length) { const {data:w}=await supabase.from("variant_wholesale").select("*").in("variant_id",vs.map(v=>v.id)); setWholesale(Object.fromEntries((w??[]).map(x=>[x.variant_id,x]))); }
       setImages(ims ?? []);
       setRecs((rs ?? []).map((r) => r.recommended_id));
     })();
@@ -68,6 +74,15 @@ function Editor() {
 
   async function save() {
     if (!p.name || !p.slug || !/^[a-z0-9-]+$/.test(p.slug)) { toast.error("Нужны название и адрес (латиница, цифры, дефис)"); return; }
+    const warnings: string[] = [];
+    for (const v of variants) {
+      const w = wholesale[v.id ?? ""] ?? {};
+      const price = retailPrice(p,v.volume_ml,v.retail_override,v.price);
+      try { if(price!=null) { for(const l of priceMeta.data?.levels??[]) wholesalePrice(price,w,l.discount_percent,priceMeta.data?.tax??6);
+        if(w.cost_price!=null) { const candidates=[price,w.base_price].filter((x):x is number=>x!=null); if(candidates.some(x=>x<=0 || (x-x*(priceMeta.data?.tax??6)/100-Number(w.cost_price))/x*100 < (w.minimum_margin_percent??30))) warnings.push(`${v.volume_ml??""} мл: маржа ниже минимальной`); }
+      }} catch(e) { toast.error((e as Error).message); return; }
+    }
+    if(warnings.length && !window.confirm(warnings.join("\n")+"\nСохранить несмотря на предупреждение?")) return;
     setBusy(true);
     try {
       const { id: _omit, created_at: _c, ...body } = p as P;
@@ -79,13 +94,16 @@ function Editor() {
       const pid = saved.id;
       // variants: upsert existing, insert new, delete removed
       const { data: existing } = await supabase.from("product_variants").select("id").eq("product_id", pid);
-      const keep = variants.filter((v) => v.id).map((v) => v.id!);
+      const keep = variants.flatMap((v) => v.id ? [v.id] : []);
       const toDelete = (existing ?? []).map((e) => e.id).filter((x) => !keep.includes(x));
       if (toDelete.length) await supabase.from("product_variants").delete().in("id", toDelete);
       for (const [i, v] of variants.entries()) {
         const row = { ...v, product_id: pid, sort: i, sku: v.sku || null };
-        const r = v.id ? await supabase.from("product_variants").update(row).eq("id", v.id) : await supabase.from("product_variants").insert(row);
+        const r = v.id ? await supabase.from("product_variants").update(row).eq("id", v.id).select("id").single() : await supabase.from("product_variants").insert(row).select("id").single();
         if (r.error) throw r.error;
+        const w=wholesale[v.id ?? `new-${i}`]??{};
+        const wr=await supabase.from("variant_wholesale").upsert({variant_id:r.data.id,base_price:w.base_price??null,minimum_quantity:w.minimum_quantity??10,ozon_price:w.ozon_price??null,max_discount_percent:w.max_discount_percent??null,cost_price:w.cost_price??null,minimum_margin_percent:w.minimum_margin_percent??30});
+        if(wr.error) throw wr.error;
       }
       await supabase.from("product_recommendations").delete().eq("product_id", pid);
       if (recs.length) await supabase.from("product_recommendations").insert(recs.map((r, i) => ({ product_id: pid, recommended_id: r, sort: i })));
@@ -161,6 +179,14 @@ function Editor() {
         </div>
       </Block>
 
+      <Block title="Розничная цена по эталону">
+        <Check label="Автоматическая сетка 100 / 300 / 500 / 1000 / 5000 мл" v={!!p.auto_pricing} on={v=>set("auto_pricing",v)} />
+        {p.auto_pricing && <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <F label="Эталонная фасовка, мл"><select aria-label="Эталонная фасовка" className="h-10 w-full rounded-md border border-input bg-background px-3" value={p.reference_volume_ml??""} onChange={e=>set("reference_volume_ml",e.target.value?Number(e.target.value):null)}><option value="">Выберите</option>{[100,300,500,1000,5000].map(v=><option key={v}>{v}</option>)}</select></F>
+          <F label="Цена эталона, ₽"><Input aria-label="Цена эталона" type="number" min="1" value={p.reference_price??""} onChange={e=>set("reference_price",e.target.value?Number(e.target.value):null)}/></F>
+          <F label="Шаг, процентных пунктов"><Input aria-label="Шаг цены" type="number" min="0" max="24.99" step="0.1" value={p.pricing_step_percent??10} onChange={e=>set("pricing_step_percent",Number(e.target.value))}/></F>
+        </div>}
+      </Block>
       <Block title="Фасовки">
         <div className="space-y-3">
           {variants.map((v, i) => {
@@ -172,7 +198,7 @@ function Editor() {
                 <F label="Объём, мл"><Input type="number" value={v.volume_ml ?? ""} onChange={num("volume_ml")} /></F>
                 <F label="Вес, г"><Input type="number" value={v.weight_g ?? ""} onChange={num("weight_g")} /></F>
                 <F label="SKU"><Input value={v.sku ?? ""} onChange={str("sku")} /></F>
-                <F label="Цена, ₽"><Input type="number" value={v.price ?? ""} onChange={num("price")} /></F>
+                <F label="Розничная цена, ₽"><Input type="number" disabled={!!p.auto_pricing && v.retail_override===false} value={retailPrice(p,v.volume_ml,v.retail_override,v.price)??""} onChange={num("price")} />{p.auto_pricing&&<Check label="Ручная цена" v={v.retail_override!==false} on={x=>up("retail_override",x)}/>}</F>
                 <F label="Остаток"><Input type="number" value={v.stock ?? ""} onChange={num("stock")} placeholder={TBA} /></F>
                 <F label="Вес с упаковкой, г"><Input type="number" value={v.gross_weight_g ?? ""} onChange={num("gross_weight_g")} /></F>
                 <F label="Ozon"><Input value={v.ozon_url ?? ""} onChange={str("ozon_url")} /></F>
@@ -184,10 +210,11 @@ function Editor() {
                   <Check label="Продаётся на сайте" v={v.sold_on_site !== false} on={(x) => up("sold_on_site", x)} />
                   <Button size="icon" variant="ghost" onClick={() => setVariants((xs) => xs.filter((_, j) => j !== i))} aria-label="Удалить фасовку"><Trash2 /></Button>
                 </div>
+                <WholesaleFields value={wholesale[v.id??`new-${i}`]??{}} onChange={w=>setWholesale(x=>({...x,[v.id??`new-${i}`]:w}))} retail={retailPrice(p,v.volume_ml,v.retail_override,v.price)} tax={priceMeta.data?.tax??6} levels={priceMeta.data?.levels??[]}/>
               </div>
             );
           })}
-          <Button variant="outline" onClick={() => setVariants((x) => [...x, { sold_on_site: true }])}><Plus /> Фасовка</Button>
+          <Button variant="outline" onClick={() => setVariants((x) => [...x, { sold_on_site: true, retail_override: !p.auto_pricing }])}><Plus /> Фасовка</Button>
         </div>
       </Block>
 
