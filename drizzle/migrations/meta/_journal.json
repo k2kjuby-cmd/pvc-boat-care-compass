@@ -29,6 +29,13 @@
       "when": 1793523133781,
       "tag": "0003_retail_and_private_wholesale_pricing",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793523193696,
+      "tag": "0004_pricing_validation_and_admin_accounts",
+      "breakpoints": true
     }
   ]
 }

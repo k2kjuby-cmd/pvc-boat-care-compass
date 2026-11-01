@@ -660,6 +660,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_account_choices: {
+        Args: never
+        Returns: {
+          email: string
+          user_id: string
+        }[]
+      }
       calculate_retail_price: {
         Args: {
           _reference_price: number
