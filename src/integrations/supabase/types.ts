@@ -35,6 +35,57 @@ export type Database = {
         }
         Relationships: []
       }
+      checkout_settings: {
+        Row: {
+          bank_details: string | null
+          created_body: string
+          created_subject: string
+          delivery_secret_names: Json
+          id: number
+          invoice_enabled: boolean
+          payment_secret_name: string | null
+          retail_delivery: Json
+          status_body: string
+          status_subject: string
+          test_mode: boolean
+          wholesale_delivery: Json
+          yookassa_enabled: boolean
+          yookassa_shop_id: string | null
+        }
+        Insert: {
+          bank_details?: string | null
+          created_body?: string
+          created_subject?: string
+          delivery_secret_names?: Json
+          id?: number
+          invoice_enabled?: boolean
+          payment_secret_name?: string | null
+          retail_delivery?: Json
+          status_body?: string
+          status_subject?: string
+          test_mode?: boolean
+          wholesale_delivery?: Json
+          yookassa_enabled?: boolean
+          yookassa_shop_id?: string | null
+        }
+        Update: {
+          bank_details?: string | null
+          created_body?: string
+          created_subject?: string
+          delivery_secret_names?: Json
+          id?: number
+          invoice_enabled?: boolean
+          payment_secret_name?: string | null
+          retail_delivery?: Json
+          status_body?: string
+          status_subject?: string
+          test_mode?: boolean
+          wholesale_delivery?: Json
+          yookassa_enabled?: boolean
+          yookassa_shop_id?: string | null
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           city: string | null
@@ -118,6 +169,145 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      order_item_private: {
+        Row: {
+          actual_margin_percent: number | null
+          cost_price: number | null
+          item_id: string
+          tax_percent: number
+        }
+        Insert: {
+          actual_margin_percent?: number | null
+          cost_price?: number | null
+          item_id: string
+          tax_percent: number
+        }
+        Update: {
+          actual_margin_percent?: number | null
+          cost_price?: number | null
+          item_id?: string
+          tax_percent?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_item_private_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: true
+            referencedRelation: "order_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_items: {
+        Row: {
+          gross_weight_g: number | null
+          id: string
+          name: string
+          order_id: string
+          quantity: number
+          sku: string | null
+          unit_price: number
+          variant_id: string
+          volume_ml: number | null
+          weight_g: number | null
+        }
+        Insert: {
+          gross_weight_g?: number | null
+          id?: string
+          name: string
+          order_id: string
+          quantity: number
+          sku?: string | null
+          unit_price: number
+          variant_id: string
+          volume_ml?: number | null
+          weight_g?: number | null
+        }
+        Update: {
+          gross_weight_g?: number | null
+          id?: string
+          name?: string
+          order_id?: string
+          quantity?: number
+          sku?: string | null
+          unit_price?: number
+          variant_id?: string
+          volume_ml?: number | null
+          weight_g?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          admin_note: string | null
+          buyer_type: string
+          consent: boolean
+          created_at: string
+          customer: Json
+          delivery_cost: number | null
+          delivery_method: string
+          id: string
+          is_dealer: boolean
+          number: number
+          payment_method: string
+          receipt_url: string | null
+          status: string
+          test_mode: boolean
+          total: number
+          tracking_number: string | null
+          user_id: string | null
+          weight_g: number | null
+        }
+        Insert: {
+          admin_note?: string | null
+          buyer_type: string
+          consent: boolean
+          created_at?: string
+          customer: Json
+          delivery_cost?: number | null
+          delivery_method: string
+          id?: string
+          is_dealer?: boolean
+          number?: never
+          payment_method: string
+          receipt_url?: string | null
+          status?: string
+          test_mode?: boolean
+          total: number
+          tracking_number?: string | null
+          user_id?: string | null
+          weight_g?: number | null
+        }
+        Update: {
+          admin_note?: string | null
+          buyer_type?: string
+          consent?: boolean
+          created_at?: string
+          customer?: Json
+          delivery_cost?: number | null
+          delivery_method?: string
+          id?: string
+          is_dealer?: boolean
+          number?: never
+          payment_method?: string
+          receipt_url?: string | null
+          status?: string
+          test_mode?: boolean
+          total?: number
+          tracking_number?: string | null
+          user_id?: string | null
+          weight_g?: number | null
+        }
+        Relationships: []
       }
       problems: {
         Row: {
@@ -420,6 +610,8 @@ export type Database = {
           ozon_url: string | null
           payment_tax_percent: number
           postal_address: string | null
+          retail_minimum_amount: number
+          retail_minimum_enabled: boolean
           seller_inn: string | null
           seller_name: string | null
           seller_status: string | null
@@ -442,6 +634,8 @@ export type Database = {
           ozon_url?: string | null
           payment_tax_percent?: number
           postal_address?: string | null
+          retail_minimum_amount?: number
+          retail_minimum_enabled?: boolean
           seller_inn?: string | null
           seller_name?: string | null
           seller_status?: string | null
@@ -464,6 +658,8 @@ export type Database = {
           ozon_url?: string | null
           payment_tax_percent?: number
           postal_address?: string | null
+          retail_minimum_amount?: number
+          retail_minimum_enabled?: boolean
           seller_inn?: string | null
           seller_name?: string | null
           seller_status?: string | null
@@ -676,6 +872,8 @@ export type Database = {
         }
         Returns: number
       }
+      cart_quote: { Args: { _items: Json }; Returns: Json }
+      checkout_options: { Args: never; Returns: Json }
       claim_first_admin: { Args: never; Returns: boolean }
       dealer_quote: {
         Args: { _quantity: number; _variant_id: string }
@@ -687,6 +885,16 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      place_order: {
+        Args: {
+          _buyer_type: string
+          _customer: Json
+          _delivery: string
+          _items: Json
+          _payment: string
+        }
+        Returns: Json
       }
     }
     Enums: {
