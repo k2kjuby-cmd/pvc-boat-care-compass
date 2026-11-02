@@ -18,7 +18,9 @@ import { Route as DostavkaIOplataRouteImport } from './routes/dostavka-i-oplata'
 import { Route as GdeKupitRouteImport } from './routes/gde-kupit'
 import { Route as KalkulyatorRazvedeniyaRouteImport } from './routes/kalkulyator-razvedeniya'
 import { Route as KontaktyRouteImport } from './routes/kontakty'
+import { Route as KorzinaRouteImport } from './routes/korzina'
 import { Route as OBrendeRouteImport } from './routes/o-brende'
+import { Route as OformlenieRouteImport } from './routes/oformlenie'
 import { Route as OptovikamRouteImport } from './routes/optovikam'
 import { Route as PolitikaKonfidencialnostiRouteImport } from './routes/politika-konfidencialnosti'
 import { Route as PolzovatelskoeSoglashenieRouteImport } from './routes/polzovatelskoe-soglashenie'
@@ -79,9 +81,19 @@ const KontaktyRoute = KontaktyRouteImport.update({
   path: '/kontakty',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KorzinaRoute = KorzinaRouteImport.update({
+  id: '/korzina',
+  path: '/korzina',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OBrendeRoute = OBrendeRouteImport.update({
   id: '/o-brende',
   path: '/o-brende',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OformlenieRoute = OformlenieRouteImport.update({
+  id: '/oformlenie',
+  path: '/oformlenie',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OptovikamRoute = OptovikamRouteImport.update({
@@ -176,7 +188,9 @@ export interface FileRoutesByFullPath {
   '/gde-kupit': typeof GdeKupitRoute
   '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
   '/kontakty': typeof KontaktyRoute
+  '/korzina': typeof KorzinaRoute
   '/o-brende': typeof OBrendeRoute
+  '/oformlenie': typeof OformlenieRoute
   '/optovikam': typeof OptovikamRoute
   '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
@@ -202,7 +216,9 @@ export interface FileRoutesByTo {
   '/gde-kupit': typeof GdeKupitRoute
   '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
   '/kontakty': typeof KontaktyRoute
+  '/korzina': typeof KorzinaRoute
   '/o-brende': typeof OBrendeRoute
+  '/oformlenie': typeof OformlenieRoute
   '/optovikam': typeof OptovikamRoute
   '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
@@ -229,7 +245,9 @@ export interface FileRoutesById {
   '/gde-kupit': typeof GdeKupitRoute
   '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
   '/kontakty': typeof KontaktyRoute
+  '/korzina': typeof KorzinaRoute
   '/o-brende': typeof OBrendeRoute
+  '/oformlenie': typeof OformlenieRoute
   '/optovikam': typeof OptovikamRoute
   '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
@@ -257,7 +275,9 @@ export interface FileRouteTypes {
     | '/gde-kupit'
     | '/kalkulyator-razvedeniya'
     | '/kontakty'
+    | '/korzina'
     | '/o-brende'
+    | '/oformlenie'
     | '/optovikam'
     | '/politika-konfidencialnosti'
     | '/polzovatelskoe-soglashenie'
@@ -283,7 +303,9 @@ export interface FileRouteTypes {
     | '/gde-kupit'
     | '/kalkulyator-razvedeniya'
     | '/kontakty'
+    | '/korzina'
     | '/o-brende'
+    | '/oformlenie'
     | '/optovikam'
     | '/politika-konfidencialnosti'
     | '/polzovatelskoe-soglashenie'
@@ -309,7 +331,9 @@ export interface FileRouteTypes {
     | '/gde-kupit'
     | '/kalkulyator-razvedeniya'
     | '/kontakty'
+    | '/korzina'
     | '/o-brende'
+    | '/oformlenie'
     | '/optovikam'
     | '/politika-konfidencialnosti'
     | '/polzovatelskoe-soglashenie'
@@ -337,7 +361,9 @@ export interface RootRouteChildren {
   GdeKupitRoute: typeof GdeKupitRoute
   KalkulyatorRazvedeniyaRoute: typeof KalkulyatorRazvedeniyaRoute
   KontaktyRoute: typeof KontaktyRoute
+  KorzinaRoute: typeof KorzinaRoute
   OBrendeRoute: typeof OBrendeRoute
+  OformlenieRoute: typeof OformlenieRoute
   OptovikamRoute: typeof OptovikamRoute
   PolitikaKonfidencialnostiRoute: typeof PolitikaKonfidencialnostiRoute
   PolzovatelskoeSoglashenieRoute: typeof PolzovatelskoeSoglashenieRoute
@@ -412,11 +438,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KontaktyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/korzina': {
+      id: '/korzina'
+      path: '/korzina'
+      fullPath: '/korzina'
+      preLoaderRoute: typeof KorzinaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/o-brende': {
       id: '/o-brende'
       path: '/o-brende'
       fullPath: '/o-brende'
       preLoaderRoute: typeof OBrendeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oformlenie': {
+      id: '/oformlenie'
+      path: '/oformlenie'
+      fullPath: '/oformlenie'
+      preLoaderRoute: typeof OformlenieRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/optovikam': {
@@ -571,7 +611,9 @@ const rootRouteChildren: RootRouteChildren = {
   GdeKupitRoute: GdeKupitRoute,
   KalkulyatorRazvedeniyaRoute: KalkulyatorRazvedeniyaRoute,
   KontaktyRoute: KontaktyRoute,
+  KorzinaRoute: KorzinaRoute,
   OBrendeRoute: OBrendeRoute,
+  OformlenieRoute: OformlenieRoute,
   OptovikamRoute: OptovikamRoute,
   PolitikaKonfidencialnostiRoute: PolitikaKonfidencialnostiRoute,
   PolzovatelskoeSoglashenieRoute: PolzovatelskoeSoglashenieRoute,
