@@ -25,6 +25,7 @@ import { Route as PolzovatelskoeSoglashenieRouteImport } from './routes/polzovat
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SkoroRouteImport } from './routes/skoro'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedOptovyjPrajsRouteImport } from './routes/_authenticated/optovyj-prajs'
 import { Route as KatalogIndexRouteImport } from './routes/katalog.index'
 import { Route as KatalogSlugRouteImport } from './routes/katalog.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -115,6 +116,12 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOptovyjPrajsRoute =
+  AuthenticatedOptovyjPrajsRouteImport.update({
+    id: '/optovyj-prajs',
+    path: '/optovyj-prajs',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const KatalogIndexRoute = KatalogIndexRouteImport.update({
   id: '/katalog/',
   path: '/katalog/',
@@ -176,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
@@ -200,6 +208,7 @@ export interface FileRoutesByTo {
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog': typeof KatalogIndexRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
@@ -227,6 +236,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
@@ -254,6 +264,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/skoro'
     | '/admin'
+    | '/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog/'
     | '/admin/import'
@@ -278,6 +289,7 @@ export interface FileRouteTypes {
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog'
     | '/admin/import'
@@ -304,6 +316,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/skoro'
     | '/_authenticated/admin'
+    | '/_authenticated/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog/'
     | '/_authenticated/admin/import'
@@ -448,6 +461,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/optovyj-prajs': {
+      id: '/_authenticated/optovyj-prajs'
+      path: '/optovyj-prajs'
+      fullPath: '/optovyj-prajs'
+      preLoaderRoute: typeof AuthenticatedOptovyjPrajsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/katalog/': {
       id: '/katalog/'
       path: '/katalog'
@@ -530,10 +550,12 @@ const AuthenticatedAdminRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedOptovyjPrajsRoute: typeof AuthenticatedOptovyjPrajsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedOptovyjPrajsRoute: AuthenticatedOptovyjPrajsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
