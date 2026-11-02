@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
+import { seo } from "@/lib/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Вход для администратора — НеСдует" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ ...seo("Вход", "Вход для администратора и одобренных дилеров НеСдует.", "/auth"), meta: [...seo("Вход", "Вход для администратора и одобренных дилеров НеСдует.", "/auth").meta,{name:"robots",content:"noindex"}] }),
   component: AuthPage,
 });
 
@@ -19,9 +20,11 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
+  async function goAfterSignIn() { const {data:{user}}=await supabase.auth.getUser(); if(!user)return;const {data}=await supabase.rpc("has_role",{_user_id:user.id,_role:"admin"}); if(data)nav({to:"/admin"});else {const {data:a}=await supabase.from("dealer_accounts").select("approved").eq("user_id",user.id).maybeSingle();nav({to:a?.approved?"/optovyj-prajs":"/admin"});} }
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => { if (data.session) nav({ to: "/admin" }); });
-    const { data } = supabase.auth.onAuthStateChange((e, s) => { if (e === "SIGNED_IN" && s) nav({ to: "/admin" }); });
+    supabase.auth.getSession().then(({ data }) => { if (data.session) goAfterSignIn(); });
+    const { data } = supabase.auth.onAuthStateChange((e, s) => { if (e === "SIGNED_IN" && s) goAfterSignIn(); });
     return () => data.subscription.unsubscribe();
   }, [nav]);
 
