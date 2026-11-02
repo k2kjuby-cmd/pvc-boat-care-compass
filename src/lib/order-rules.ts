@@ -1,0 +1,10 @@
+import { z } from 'zod';
+export const ORDER_STATUS={new:'Новый',awaiting_payment:'Ожидает оплаты',awaiting_delivery:'Ожидает расчёта доставки',paid:'Оплачен',assembled:'Собран',shipped:'Отправлен',delivered:'Доставлен',cancelled:'Отменён'} as const;
+export const DELIVERY={cdek:'СДЭК',ozon:'Доставка Ozon',post:'Почта России',pek:'ПЭК',kit:'КИТ'} as const;
+export const cartItemsSchema=z.array(z.object({variant_id:z.string().uuid(),quantity:z.number().int().min(1).max(1000000)})).min(1).max(100);
+export const customerSchema=z.object({name:z.string().trim().min(2).max(200),phone:z.string().trim().regex(/^[+\d][\d ()-]{4,39}$/),email:z.string().trim().email().max(254),city:z.string().trim().min(1).max(120),address:z.string().trim().min(2).max(500),comment:z.string().trim().max(3000),messenger_type:z.enum(['','max','telegram','whatsapp']),messenger_contact:z.string().trim().max(120),company:z.string().trim().max(200),inn:z.string().regex(/^([0-9]{10}|[0-9]{12})?$/),kpp:z.string().regex(/^([0-9]{9})?$/),consent:z.literal(true)});
+export const checkoutSchema=z.object({items:cartItemsSchema,customer:customerSchema,buyer_type:z.enum(['person','organization']),delivery:z.enum(['cdek','ozon','post','pek','kit']),payment:z.enum(['yookassa','invoice'])}).superRefine((d,c)=>{if(d.buyer_type==='organization'&&(!d.customer.inn||d.customer.company.length<2))c.addIssue({code:'custom',message:'Укажите название и ИНН организации'});});
+export const minimumShortfall=(total:number,dealer:boolean,enabled=true,minimum=3000)=>dealer||!enabled?0:Math.max(0,minimum-total);
+export const canAddToCart=(status:string,sold:boolean,price:number|null)=>status==='published'&&sold&&price!=null;
+export type CartItem=z.infer<typeof cartItemsSchema>[number];
+export type CartQuote={items:{variant_id:string;product_id:string;name:string;slug:string;volume_ml:number|null;weight_g:number|null;sku:string|null;quantity:number;price:number;retail_price:number;gross_weight_g:number|null}[];total:number;is_dealer:boolean;weight_g:number|null;shortfall:number};
