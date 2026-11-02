@@ -14,6 +14,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { productQuery, formatPrice, formatVolume, PRODUCT_TYPES, type ProductImage } from "@/lib/catalog";
 import { seo } from "@/lib/site";
 import { DealerPrice } from "@/components/catalog/DealerPrice";
+import { useCart } from "@/components/catalog/CartProvider";
 
 export const Route = createFileRoute("/katalog/$slug")({
   loader: async ({ context, params }) => {
@@ -66,6 +67,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 function ProductPage() {
+  const cart=useCart();
   const { slug } = Route.useParams();
   const { data: p } = useSuspenseQuery(productQuery(slug));
   const [vi, setVi] = useState(0);
@@ -163,7 +165,7 @@ function ProductPage() {
           ) : (
             <div className="mt-6 space-y-3">
               {v?.sold_on_site !== false && v?.price != null && (
-                <Button size="lg" className="w-full shadow-glow sm:w-auto" onClick={() => toast("Корзина появится в ближайшем обновлении")}>
+                <Button size="lg" className="w-full shadow-glow sm:w-auto" onClick={() => {if(v){cart.add(v.id);toast.success("Добавлено в корзину");}}}>
                   <ShoppingCart /> В корзину
                 </Button>
               )}

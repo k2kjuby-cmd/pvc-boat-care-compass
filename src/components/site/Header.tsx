@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Menu, X, Droplet, Phone, MessageCircle } from "lucide-react";
+import { Menu, X, Droplet, Phone, MessageCircle, ShoppingCart } from "lucide-react";
+import { useCart } from "@/components/catalog/CartProvider";
 import { Button } from "@/components/ui/button";
 import { NAV, settingsQuery } from "@/lib/site";
 import { messengerLinks, nonEmpty, phoneHref } from "@/lib/contact-rules";
@@ -18,6 +19,7 @@ export function Logo() {
 }
 
 export function Header() {
+  const {items} = useCart();
   const [open, setOpen] = useState(false);
   const { data } = useQuery(settingsQuery);
   const max = data ? messengerLinks(data).find(m => m.name === "MAX") : undefined;
@@ -35,6 +37,7 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          <Button asChild size="icon" variant="ghost"><Link to="/korzina" aria-label={`Корзина, ${items.reduce((n,i)=>n+i.quantity,0)} шт.`}><ShoppingCart className="size-4" /></Link></Button>
           {nonEmpty(data?.contact_phone) && <Button asChild size="icon" variant="ghost"><a href={phoneHref(data?.contact_phone ?? "")} aria-label={`Позвонить: ${data?.contact_phone}`} title={data?.contact_phone ?? "Телефон"}><Phone className="size-4" /></a></Button>}
           {max && <Button asChild size="sm" variant="outline" className="hidden sm:inline-flex"><a href={max.url} target="_blank" rel="noopener noreferrer"><MessageCircle className="size-4" />Написать в MAX</a></Button>}
           <Button asChild size="sm" className="hidden sm:inline-flex shadow-glow">
