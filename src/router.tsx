@@ -10,8 +10,8 @@ export const getRouter = () => {
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
-    dehydrate: () => ({ queryState: dehydrate(queryClient) }),
-    hydrate: (state) => { hydrate(queryClient, state.queryState); },
+    dehydrate: () => ({ queryState: JSON.stringify(dehydrate(queryClient, { shouldDehydrateQuery: q => q.state.status === "success" && ["site-settings", "catalog", "taxonomy", "product"].includes(String(q.queryKey[0])) })) }),
+    hydrate: (state) => { hydrate(queryClient, JSON.parse(state.queryState)); },
   });
 
   return router;
