@@ -18,13 +18,16 @@ import { Route as DostavkaIOplataRouteImport } from './routes/dostavka-i-oplata'
 import { Route as GdeKupitRouteImport } from './routes/gde-kupit'
 import { Route as KalkulyatorRazvedeniyaRouteImport } from './routes/kalkulyator-razvedeniya'
 import { Route as KontaktyRouteImport } from './routes/kontakty'
+import { Route as KorzinaRouteImport } from './routes/korzina'
 import { Route as OBrendeRouteImport } from './routes/o-brende'
+import { Route as OformlenieRouteImport } from './routes/oformlenie'
 import { Route as OptovikamRouteImport } from './routes/optovikam'
 import { Route as PolitikaKonfidencialnostiRouteImport } from './routes/politika-konfidencialnosti'
 import { Route as PolzovatelskoeSoglashenieRouteImport } from './routes/polzovatelskoe-soglashenie'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SkoroRouteImport } from './routes/skoro'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedOptovyjPrajsRouteImport } from './routes/_authenticated/optovyj-prajs'
 import { Route as KatalogIndexRouteImport } from './routes/katalog.index'
 import { Route as KatalogSlugRouteImport } from './routes/katalog.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -78,9 +81,19 @@ const KontaktyRoute = KontaktyRouteImport.update({
   path: '/kontakty',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KorzinaRoute = KorzinaRouteImport.update({
+  id: '/korzina',
+  path: '/korzina',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OBrendeRoute = OBrendeRouteImport.update({
   id: '/o-brende',
   path: '/o-brende',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OformlenieRoute = OformlenieRouteImport.update({
+  id: '/oformlenie',
+  path: '/oformlenie',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OptovikamRoute = OptovikamRouteImport.update({
@@ -115,6 +128,12 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOptovyjPrajsRoute =
+  AuthenticatedOptovyjPrajsRouteImport.update({
+    id: '/optovyj-prajs',
+    path: '/optovyj-prajs',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const KatalogIndexRoute = KatalogIndexRouteImport.update({
   id: '/katalog/',
   path: '/katalog/',
@@ -169,13 +188,16 @@ export interface FileRoutesByFullPath {
   '/gde-kupit': typeof GdeKupitRoute
   '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
   '/kontakty': typeof KontaktyRoute
+  '/korzina': typeof KorzinaRoute
   '/o-brende': typeof OBrendeRoute
+  '/oformlenie': typeof OformlenieRoute
   '/optovikam': typeof OptovikamRoute
   '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
@@ -194,12 +216,15 @@ export interface FileRoutesByTo {
   '/gde-kupit': typeof GdeKupitRoute
   '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
   '/kontakty': typeof KontaktyRoute
+  '/korzina': typeof KorzinaRoute
   '/o-brende': typeof OBrendeRoute
+  '/oformlenie': typeof OformlenieRoute
   '/optovikam': typeof OptovikamRoute
   '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog': typeof KatalogIndexRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
@@ -220,13 +245,16 @@ export interface FileRoutesById {
   '/gde-kupit': typeof GdeKupitRoute
   '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
   '/kontakty': typeof KontaktyRoute
+  '/korzina': typeof KorzinaRoute
   '/o-brende': typeof OBrendeRoute
+  '/oformlenie': typeof OformlenieRoute
   '/optovikam': typeof OptovikamRoute
   '/politika-konfidencialnosti': typeof PolitikaKonfidencialnostiRoute
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
@@ -247,13 +275,16 @@ export interface FileRouteTypes {
     | '/gde-kupit'
     | '/kalkulyator-razvedeniya'
     | '/kontakty'
+    | '/korzina'
     | '/o-brende'
+    | '/oformlenie'
     | '/optovikam'
     | '/politika-konfidencialnosti'
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
     | '/admin'
+    | '/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog/'
     | '/admin/import'
@@ -272,12 +303,15 @@ export interface FileRouteTypes {
     | '/gde-kupit'
     | '/kalkulyator-razvedeniya'
     | '/kontakty'
+    | '/korzina'
     | '/o-brende'
+    | '/oformlenie'
     | '/optovikam'
     | '/politika-konfidencialnosti'
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog'
     | '/admin/import'
@@ -297,13 +331,16 @@ export interface FileRouteTypes {
     | '/gde-kupit'
     | '/kalkulyator-razvedeniya'
     | '/kontakty'
+    | '/korzina'
     | '/o-brende'
+    | '/oformlenie'
     | '/optovikam'
     | '/politika-konfidencialnosti'
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
     | '/_authenticated/admin'
+    | '/_authenticated/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog/'
     | '/_authenticated/admin/import'
@@ -324,7 +361,9 @@ export interface RootRouteChildren {
   GdeKupitRoute: typeof GdeKupitRoute
   KalkulyatorRazvedeniyaRoute: typeof KalkulyatorRazvedeniyaRoute
   KontaktyRoute: typeof KontaktyRoute
+  KorzinaRoute: typeof KorzinaRoute
   OBrendeRoute: typeof OBrendeRoute
+  OformlenieRoute: typeof OformlenieRoute
   OptovikamRoute: typeof OptovikamRoute
   PolitikaKonfidencialnostiRoute: typeof PolitikaKonfidencialnostiRoute
   PolzovatelskoeSoglashenieRoute: typeof PolzovatelskoeSoglashenieRoute
@@ -399,11 +438,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KontaktyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/korzina': {
+      id: '/korzina'
+      path: '/korzina'
+      fullPath: '/korzina'
+      preLoaderRoute: typeof KorzinaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/o-brende': {
       id: '/o-brende'
       path: '/o-brende'
       fullPath: '/o-brende'
       preLoaderRoute: typeof OBrendeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oformlenie': {
+      id: '/oformlenie'
+      path: '/oformlenie'
+      fullPath: '/oformlenie'
+      preLoaderRoute: typeof OformlenieRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/optovikam': {
@@ -446,6 +499,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/optovyj-prajs': {
+      id: '/_authenticated/optovyj-prajs'
+      path: '/optovyj-prajs'
+      fullPath: '/optovyj-prajs'
+      preLoaderRoute: typeof AuthenticatedOptovyjPrajsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/katalog/': {
@@ -530,10 +590,12 @@ const AuthenticatedAdminRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedOptovyjPrajsRoute: typeof AuthenticatedOptovyjPrajsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedOptovyjPrajsRoute: AuthenticatedOptovyjPrajsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -549,7 +611,9 @@ const rootRouteChildren: RootRouteChildren = {
   GdeKupitRoute: GdeKupitRoute,
   KalkulyatorRazvedeniyaRoute: KalkulyatorRazvedeniyaRoute,
   KontaktyRoute: KontaktyRoute,
+  KorzinaRoute: KorzinaRoute,
   OBrendeRoute: OBrendeRoute,
+  OformlenieRoute: OformlenieRoute,
   OptovikamRoute: OptovikamRoute,
   PolitikaKonfidencialnostiRoute: PolitikaKonfidencialnostiRoute,
   PolzovatelskoeSoglashenieRoute: PolzovatelskoeSoglashenieRoute,

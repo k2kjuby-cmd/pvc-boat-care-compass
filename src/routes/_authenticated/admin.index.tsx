@@ -2,9 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { seo } from "@/lib/site";
 import { formatPrice } from "@/lib/catalog";
 
-export const Route = createFileRoute("/_authenticated/admin/")({ component: ProductsList });
+export const Route = createFileRoute("/_authenticated/admin/")({ head:()=>seo("Управление товарами", "Товары и розничные цены НеСдует.", "/admin"), component: ProductsList });
 
 const STATUS: Record<string, string> = { published: "Опубликован", soon: "Скоро", hidden: "Скрыт" };
 

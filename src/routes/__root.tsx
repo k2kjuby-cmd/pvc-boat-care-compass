@@ -17,6 +17,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { settingsQuery } from "@/lib/site";
 import { organization } from "@/lib/contact-rules";
+import { CartProvider } from "@/components/catalog/CartProvider";
 
 function NotFoundComponent() {
   return (
@@ -129,11 +130,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <CartProvider>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Header />
       <main><Outlet /></main>
       <Footer />
       <Toaster />
+      </CartProvider>
     </QueryClientProvider>
   );
 }

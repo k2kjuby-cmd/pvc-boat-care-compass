@@ -11,7 +11,7 @@ export function retailPrice(rule: PriceRule, volume: number | null | undefined, 
 }
 export function wholesalePrice(retail: number, rule: WholesaleRule, discount: number, tax = 6) {
   const applied = Math.min(discount, rule.max_discount_percent ?? 100);
-  const denominator = 1 - (rule.minimum_margin_percent ?? 30) / 100 - tax / 100;
+  const denominator = (100 - (rule.minimum_margin_percent ?? 30) - tax) / 100;
   if (denominator <= 0) throw new Error("Маржа и налог/комиссия должны в сумме быть меньше 100%");
   const minimum = rule.cost_price == null ? null : Math.ceil(rule.cost_price / denominator);
   const discounted = Math.round(retail * (1 - applied / 100));

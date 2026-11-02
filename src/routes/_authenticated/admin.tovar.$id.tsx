@@ -75,8 +75,8 @@ function Editor() {
   async function save() {
     if (!p.name || !p.slug || !/^[a-z0-9-]+$/.test(p.slug)) { toast.error("Нужны название и адрес (латиница, цифры, дефис)"); return; }
     const warnings: string[] = [];
-    for (const v of variants) {
-      const w = wholesale[v.id ?? ""] ?? {};
+    for (const [i,v] of variants.entries()) {
+      const w = wholesale[v.id ?? `new-${i}`] ?? {};
       const price = retailPrice(p,v.volume_ml,v.retail_override,v.price);
       try { if(price!=null) { for(const l of priceMeta.data?.levels??[]) wholesalePrice(price,w,l.discount_percent,priceMeta.data?.tax??6);
         if(w.cost_price!=null) { const candidates=[price,w.base_price].filter((x):x is number=>x!=null); if(candidates.some(x=>x<=0 || (x-x*(priceMeta.data?.tax??6)/100-Number(w.cost_price))/x*100 < (w.minimum_margin_percent??30))) warnings.push(`${v.volume_ml??""} мл: маржа ниже минимальной`); }
