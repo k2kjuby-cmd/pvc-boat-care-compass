@@ -25,3 +25,5 @@
 - Retail prices are persisted by database triggers from the product reference grid unless a variant is manually overridden; use pricing.ts for matching admin previews and tests.
 - Wholesale configuration and costs live in admin-only variant_wholesale, with dealer_accounts linked to approved leads; dealer_quote returns only safe calculated prices after checking the caller, so private costs never enter public or dealer exports.
 - Router SSR dehydrates and hydrates its per-request QueryClient so public settings and catalog render consistently on first load.
+- Cart stores only variant IDs and quantities locally; database RPCs authoritatively quote and atomically snapshot orders with verified request ownership, while private item margins remain admin-only.
+- Checkout provider settings store secret references, never credential values; payments and shipping remain simulated until real adapters are connected.

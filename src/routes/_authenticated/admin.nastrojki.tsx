@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import type { Database } from "@/integrations/supabase/types";
 import { seo } from "@/lib/site";
+import { CheckoutSettings } from "@/components/catalog/CheckoutSettings";
 
 export const Route = createFileRoute("/_authenticated/admin/nastrojki")({ head: () => seo("Настройки сайта", "Контакты и реквизиты НеСдует.", "/admin/nastrojki"), component: Settings });
 
@@ -36,6 +37,8 @@ function Settings() {
   return (
     <div className="max-w-xl space-y-4">
       <h1 className="text-2xl uppercase">Настройки сайта</h1>
+      <label className="flex items-center gap-3"><Switch checked={s.retail_minimum_enabled} onCheckedChange={v=>setS({...s,retail_minimum_enabled:v})}/> Минимальный заказ включён для розницы</label>
+      <div><Label>Минимальная сумма заказа, ₽</Label><Input type="number" min="0" value={s.retail_minimum_amount} onChange={e=>setS({...s,retail_minimum_amount:Number(e.target.value)})}/></div>
       <div className="space-y-1.5"><Label>Налог и комиссия платёжной системы, %</Label><Input aria-label="Налог и комиссия платёжной системы, %" type="number" min="0" max="99" step="0.1" value={s.payment_tax_percent} onChange={e=>setS({...s,payment_tax_percent:Number(e.target.value)})}/></div>
       {FIELDS.map(([k, label]) => (
         <div key={k} className="space-y-1.5">
@@ -45,6 +48,7 @@ function Settings() {
       ))}
       <label className="flex items-center gap-3"><Switch checked={s.dealers_page_enabled} onCheckedChange={(v) => setS({ ...s, dealers_page_enabled: v })} /> Показывать страницу «Наши дилеры»</label>
       <Button onClick={save}>Сохранить</Button>
+      <CheckoutSettings/>
     </div>
   );
 }
