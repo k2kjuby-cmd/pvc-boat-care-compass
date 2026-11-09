@@ -26,7 +26,9 @@ import { Route as PolitikaKonfidencialnostiRouteImport } from './routes/politika
 import { Route as PolzovatelskoeSoglashenieRouteImport } from './routes/polzovatelskoe-soglashenie'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SkoroRouteImport } from './routes/skoro'
+import { Route as SozdatParolRouteImport } from './routes/sozdat-parol'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedKabinetRouteImport } from './routes/_authenticated/kabinet'
 import { Route as AuthenticatedOptovyjPrajsRouteImport } from './routes/_authenticated/optovyj-prajs'
 import { Route as KatalogIndexRouteImport } from './routes/katalog.index'
 import { Route as KatalogSlugRouteImport } from './routes/katalog.$slug'
@@ -36,6 +38,10 @@ import { Route as AuthenticatedAdminNastrojkiRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminOptRouteImport } from './routes/_authenticated/admin.opt'
 import { Route as AuthenticatedAdminZakazyRouteImport } from './routes/_authenticated/admin.zakazy'
 import { Route as AuthenticatedAdminZayavkiRouteImport } from './routes/_authenticated/admin.zayavki'
+import { Route as AuthenticatedKabinetIndexRouteImport } from './routes/_authenticated/kabinet.index'
+import { Route as AuthenticatedKabinetMaterialyRouteImport } from './routes/_authenticated/kabinet.materialy'
+import { Route as AuthenticatedKabinetProfilRouteImport } from './routes/_authenticated/kabinet.profil'
+import { Route as AuthenticatedKabinetZakazyRouteImport } from './routes/_authenticated/kabinet.zakazy'
 import { Route as AuthenticatedAdminTovarIdRouteImport } from './routes/_authenticated/admin.tovar.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -124,9 +130,19 @@ const SkoroRoute = SkoroRouteImport.update({
   path: '/skoro',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SozdatParolRoute = SozdatParolRouteImport.update({
+  id: '/sozdat-parol',
+  path: '/sozdat-parol',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedKabinetRoute = AuthenticatedKabinetRouteImport.update({
+  id: '/kabinet',
+  path: '/kabinet',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedOptovyjPrajsRoute =
@@ -179,6 +195,30 @@ const AuthenticatedAdminZayavkiRoute =
     path: '/zayavki',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedKabinetIndexRoute =
+  AuthenticatedKabinetIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedKabinetRoute,
+  } as any)
+const AuthenticatedKabinetMaterialyRoute =
+  AuthenticatedKabinetMaterialyRouteImport.update({
+    id: '/materialy',
+    path: '/materialy',
+    getParentRoute: () => AuthenticatedKabinetRoute,
+  } as any)
+const AuthenticatedKabinetProfilRoute =
+  AuthenticatedKabinetProfilRouteImport.update({
+    id: '/profil',
+    path: '/profil',
+    getParentRoute: () => AuthenticatedKabinetRoute,
+  } as any)
+const AuthenticatedKabinetZakazyRoute =
+  AuthenticatedKabinetZakazyRouteImport.update({
+    id: '/zakazy',
+    path: '/zakazy',
+    getParentRoute: () => AuthenticatedKabinetRoute,
+  } as any)
 const AuthenticatedAdminTovarIdRoute =
   AuthenticatedAdminTovarIdRouteImport.update({
     id: '/tovar/$id',
@@ -203,7 +243,9 @@ export interface FileRoutesByFullPath {
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/sozdat-parol': typeof SozdatParolRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/kabinet': typeof AuthenticatedKabinetRouteWithChildren
   '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
@@ -212,7 +254,11 @@ export interface FileRoutesByFullPath {
   '/admin/opt': typeof AuthenticatedAdminOptRoute
   '/admin/zakazy': typeof AuthenticatedAdminZakazyRoute
   '/admin/zayavki': typeof AuthenticatedAdminZayavkiRoute
+  '/kabinet/materialy': typeof AuthenticatedKabinetMaterialyRoute
+  '/kabinet/profil': typeof AuthenticatedKabinetProfilRoute
+  '/kabinet/zakazy': typeof AuthenticatedKabinetZakazyRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/kabinet/': typeof AuthenticatedKabinetIndexRoute
   '/admin/tovar/$id': typeof AuthenticatedAdminTovarIdRoute
 }
 export interface FileRoutesByTo {
@@ -232,6 +278,7 @@ export interface FileRoutesByTo {
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/sozdat-parol': typeof SozdatParolRoute
   '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog': typeof KatalogIndexRoute
@@ -240,7 +287,11 @@ export interface FileRoutesByTo {
   '/admin/opt': typeof AuthenticatedAdminOptRoute
   '/admin/zakazy': typeof AuthenticatedAdminZakazyRoute
   '/admin/zayavki': typeof AuthenticatedAdminZayavkiRoute
+  '/kabinet/materialy': typeof AuthenticatedKabinetMaterialyRoute
+  '/kabinet/profil': typeof AuthenticatedKabinetProfilRoute
+  '/kabinet/zakazy': typeof AuthenticatedKabinetZakazyRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/kabinet': typeof AuthenticatedKabinetIndexRoute
   '/admin/tovar/$id': typeof AuthenticatedAdminTovarIdRoute
 }
 export interface FileRoutesById {
@@ -262,7 +313,9 @@ export interface FileRoutesById {
   '/polzovatelskoe-soglashenie': typeof PolzovatelskoeSoglashenieRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/skoro': typeof SkoroRoute
+  '/sozdat-parol': typeof SozdatParolRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/kabinet': typeof AuthenticatedKabinetRouteWithChildren
   '/_authenticated/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
@@ -271,7 +324,11 @@ export interface FileRoutesById {
   '/_authenticated/admin/opt': typeof AuthenticatedAdminOptRoute
   '/_authenticated/admin/zakazy': typeof AuthenticatedAdminZakazyRoute
   '/_authenticated/admin/zayavki': typeof AuthenticatedAdminZayavkiRoute
+  '/_authenticated/kabinet/materialy': typeof AuthenticatedKabinetMaterialyRoute
+  '/_authenticated/kabinet/profil': typeof AuthenticatedKabinetProfilRoute
+  '/_authenticated/kabinet/zakazy': typeof AuthenticatedKabinetZakazyRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/kabinet/': typeof AuthenticatedKabinetIndexRoute
   '/_authenticated/admin/tovar/$id': typeof AuthenticatedAdminTovarIdRoute
 }
 export interface FileRouteTypes {
@@ -293,7 +350,9 @@ export interface FileRouteTypes {
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/sozdat-parol'
     | '/admin'
+    | '/kabinet'
     | '/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog/'
@@ -302,7 +361,11 @@ export interface FileRouteTypes {
     | '/admin/opt'
     | '/admin/zakazy'
     | '/admin/zayavki'
+    | '/kabinet/materialy'
+    | '/kabinet/profil'
+    | '/kabinet/zakazy'
     | '/admin/'
+    | '/kabinet/'
     | '/admin/tovar/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -322,6 +385,7 @@ export interface FileRouteTypes {
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/sozdat-parol'
     | '/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog'
@@ -330,7 +394,11 @@ export interface FileRouteTypes {
     | '/admin/opt'
     | '/admin/zakazy'
     | '/admin/zayavki'
+    | '/kabinet/materialy'
+    | '/kabinet/profil'
+    | '/kabinet/zakazy'
     | '/admin'
+    | '/kabinet'
     | '/admin/tovar/$id'
   id:
     | '__root__'
@@ -351,7 +419,9 @@ export interface FileRouteTypes {
     | '/polzovatelskoe-soglashenie'
     | '/sitemap.xml'
     | '/skoro'
+    | '/sozdat-parol'
     | '/_authenticated/admin'
+    | '/_authenticated/kabinet'
     | '/_authenticated/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog/'
@@ -360,7 +430,11 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/opt'
     | '/_authenticated/admin/zakazy'
     | '/_authenticated/admin/zayavki'
+    | '/_authenticated/kabinet/materialy'
+    | '/_authenticated/kabinet/profil'
+    | '/_authenticated/kabinet/zakazy'
     | '/_authenticated/admin/'
+    | '/_authenticated/kabinet/'
     | '/_authenticated/admin/tovar/$id'
   fileRoutesById: FileRoutesById
 }
@@ -382,6 +456,7 @@ export interface RootRouteChildren {
   PolzovatelskoeSoglashenieRoute: typeof PolzovatelskoeSoglashenieRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SkoroRoute: typeof SkoroRoute
+  SozdatParolRoute: typeof SozdatParolRoute
   KatalogSlugRoute: typeof KatalogSlugRoute
   KatalogIndexRoute: typeof KatalogIndexRoute
 }
@@ -507,11 +582,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SkoroRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sozdat-parol': {
+      id: '/sozdat-parol'
+      path: '/sozdat-parol'
+      fullPath: '/sozdat-parol'
+      preLoaderRoute: typeof SozdatParolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/kabinet': {
+      id: '/_authenticated/kabinet'
+      path: '/kabinet'
+      fullPath: '/kabinet'
+      preLoaderRoute: typeof AuthenticatedKabinetRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/optovyj-prajs': {
@@ -577,6 +666,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminZayavkiRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/kabinet/': {
+      id: '/_authenticated/kabinet/'
+      path: '/'
+      fullPath: '/kabinet/'
+      preLoaderRoute: typeof AuthenticatedKabinetIndexRouteImport
+      parentRoute: typeof AuthenticatedKabinetRoute
+    }
+    '/_authenticated/kabinet/materialy': {
+      id: '/_authenticated/kabinet/materialy'
+      path: '/materialy'
+      fullPath: '/kabinet/materialy'
+      preLoaderRoute: typeof AuthenticatedKabinetMaterialyRouteImport
+      parentRoute: typeof AuthenticatedKabinetRoute
+    }
+    '/_authenticated/kabinet/profil': {
+      id: '/_authenticated/kabinet/profil'
+      path: '/profil'
+      fullPath: '/kabinet/profil'
+      preLoaderRoute: typeof AuthenticatedKabinetProfilRouteImport
+      parentRoute: typeof AuthenticatedKabinetRoute
+    }
+    '/_authenticated/kabinet/zakazy': {
+      id: '/_authenticated/kabinet/zakazy'
+      path: '/zakazy'
+      fullPath: '/kabinet/zakazy'
+      preLoaderRoute: typeof AuthenticatedKabinetZakazyRouteImport
+      parentRoute: typeof AuthenticatedKabinetRoute
+    }
     '/_authenticated/admin/tovar/$id': {
       id: '/_authenticated/admin/tovar/$id'
       path: '/tovar/$id'
@@ -610,13 +727,32 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
 const AuthenticatedAdminRouteWithChildren =
   AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
 
+interface AuthenticatedKabinetRouteChildren {
+  AuthenticatedKabinetMaterialyRoute: typeof AuthenticatedKabinetMaterialyRoute
+  AuthenticatedKabinetProfilRoute: typeof AuthenticatedKabinetProfilRoute
+  AuthenticatedKabinetZakazyRoute: typeof AuthenticatedKabinetZakazyRoute
+  AuthenticatedKabinetIndexRoute: typeof AuthenticatedKabinetIndexRoute
+}
+
+const AuthenticatedKabinetRouteChildren: AuthenticatedKabinetRouteChildren = {
+  AuthenticatedKabinetMaterialyRoute: AuthenticatedKabinetMaterialyRoute,
+  AuthenticatedKabinetProfilRoute: AuthenticatedKabinetProfilRoute,
+  AuthenticatedKabinetZakazyRoute: AuthenticatedKabinetZakazyRoute,
+  AuthenticatedKabinetIndexRoute: AuthenticatedKabinetIndexRoute,
+}
+
+const AuthenticatedKabinetRouteWithChildren =
+  AuthenticatedKabinetRoute._addFileChildren(AuthenticatedKabinetRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedKabinetRoute: typeof AuthenticatedKabinetRouteWithChildren
   AuthenticatedOptovyjPrajsRoute: typeof AuthenticatedOptovyjPrajsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedKabinetRoute: AuthenticatedKabinetRouteWithChildren,
   AuthenticatedOptovyjPrajsRoute: AuthenticatedOptovyjPrajsRoute,
 }
 
@@ -641,6 +777,7 @@ const rootRouteChildren: RootRouteChildren = {
   PolzovatelskoeSoglashenieRoute: PolzovatelskoeSoglashenieRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SkoroRoute: SkoroRoute,
+  SozdatParolRoute: SozdatParolRoute,
   KatalogSlugRoute: KatalogSlugRoute,
   KatalogIndexRoute: KatalogIndexRoute,
 }

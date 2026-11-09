@@ -43,6 +43,13 @@
       "when": 1793598784812,
       "tag": "0005_checkout_and_order_snapshots",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794251106655,
+      "tag": "0006_dealer_cabinet",
+      "breakpoints": true
     }
   ]
 }
