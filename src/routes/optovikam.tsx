@@ -36,6 +36,7 @@ const schema = z.object({
   name: z.string().trim().min(2, "Укажите имя").max(200),
   company: z.string().trim().min(1, "Укажите компанию").max(200),
   city: z.string().trim().min(2, "Укажите город").max(120),
+  email: z.string().trim().email("Проверьте e-mail").max(254),
   phone: z.string().trim().regex(/^[+\d][\d\s()-]{4,39}$/, "Проверьте телефон"),
   messenger_type: z.enum(["max", "telegram", "whatsapp"]),
   messenger_contact: z.string().trim().max(120).optional(),
@@ -47,7 +48,7 @@ const schema = z.object({
 
 function Wholesale() {
   const { utm_source } = Route.useSearch();
-  const [f, setF] = useState({ name: "", company: "", city: "", phone: "", messenger_type: "max", messenger_contact: "", business_type: "", inn: "", sales_links: "", comment: "" });
+  const [f, setF] = useState({ name: "", company: "", city: "", email: "", phone: "", messenger_type: "max", messenger_contact: "", business_type: "", inn: "", sales_links: "", comment: "" });
   const [consent, setConsent] = useState(false);
   const [newsletter, setNewsletter] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -121,6 +122,7 @@ function Wholesale() {
             <Field label="Имя *"><Input value={f.name} onChange={set("name")} autoComplete="name" /></Field>
             <Field label="Компания *"><Input value={f.company} onChange={set("company")} autoComplete="organization" /></Field>
             <Field label="Город *"><Input value={f.city} onChange={set("city")} /></Field>
+            <Field label="E-mail * (для доступа в кабинет дилера)"><Input type="email" value={f.email} onChange={set("email")} autoComplete="email" /></Field>
             <Field label="Телефон *"><Input type="tel" value={f.phone} onChange={set("phone")} autoComplete="tel" placeholder="+7" /></Field>
             <Field label="MAX / Telegram / WhatsApp">
               <div className="flex gap-2">
