@@ -133,24 +133,75 @@ export type Database = {
       }
       dealer_accounts: {
         Row: {
+          admin_notes: string | null
           approved: boolean
+          bank_details: string | null
+          city: string | null
+          company: string | null
+          contact_name: string | null
           created_at: string
+          email: string | null
+          individual_discount_percent: number | null
+          inn: string | null
+          kpp: string | null
           lead_id: string
+          legal_address: string | null
           manual_level_id: string | null
+          map_consent: boolean
+          map_enabled: boolean
+          map_lat: number | null
+          map_lng: number | null
+          ogrn: string | null
+          phone: string | null
+          public_address: string | null
           user_id: string
         }
         Insert: {
+          admin_notes?: string | null
           approved?: boolean
+          bank_details?: string | null
+          city?: string | null
+          company?: string | null
+          contact_name?: string | null
           created_at?: string
+          email?: string | null
+          individual_discount_percent?: number | null
+          inn?: string | null
+          kpp?: string | null
           lead_id: string
+          legal_address?: string | null
           manual_level_id?: string | null
+          map_consent?: boolean
+          map_enabled?: boolean
+          map_lat?: number | null
+          map_lng?: number | null
+          ogrn?: string | null
+          phone?: string | null
+          public_address?: string | null
           user_id: string
         }
         Update: {
+          admin_notes?: string | null
           approved?: boolean
+          bank_details?: string | null
+          city?: string | null
+          company?: string | null
+          contact_name?: string | null
           created_at?: string
+          email?: string | null
+          individual_discount_percent?: number | null
+          inn?: string | null
+          kpp?: string | null
           lead_id?: string
+          legal_address?: string | null
           manual_level_id?: string | null
+          map_consent?: boolean
+          map_enabled?: boolean
+          map_lat?: number | null
+          map_lng?: number | null
+          ogrn?: string | null
+          phone?: string | null
+          public_address?: string | null
           user_id?: string
         }
         Relationships: [
@@ -169,6 +220,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      dealer_materials: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          kind: string
+          sort: number
+          title: string
+          url: string | null
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          sort?: number
+          title: string
+          url?: string | null
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          sort?: number
+          title?: string
+          url?: string | null
+        }
+        Relationships: []
       }
       order_item_private: {
         Row: {
@@ -773,6 +854,7 @@ export type Database = {
           company: string
           consent: boolean
           created_at: string
+          email: string | null
           id: string
           inn: string | null
           messenger_contact: string | null
@@ -792,6 +874,7 @@ export type Database = {
           company: string
           consent: boolean
           created_at?: string
+          email?: string | null
           id?: string
           inn?: string | null
           messenger_contact?: string | null
@@ -811,6 +894,7 @@ export type Database = {
           company?: string
           consent?: boolean
           created_at?: string
+          email?: string | null
           id?: string
           inn?: string | null
           messenger_contact?: string | null
@@ -879,6 +963,7 @@ export type Database = {
         Args: { _quantity: number; _variant_id: string }
         Returns: Json
       }
+      dealer_update_profile: { Args: { _p: Json }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -895,6 +980,16 @@ export type Database = {
           _payment: string
         }
         Returns: Json
+      }
+      public_dealers: {
+        Args: never
+        Returns: {
+          city: string
+          company: string
+          map_lat: number
+          map_lng: number
+          public_address: string
+        }[]
       }
     }
     Enums: {
