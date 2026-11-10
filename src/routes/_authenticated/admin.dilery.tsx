@@ -17,7 +17,7 @@ type Lv = Database['public']['Tables']['wholesale_levels']['Row'];
 const BT: Record<string, string> = { shop: 'Магазин', rental: 'Прокат', workshop: 'Мастерская', dealer: 'Дилер', other: 'Другое' };
 const sel = 'h-10 rounded-md border border-input bg-background px-3';
 
-function DealerCard({ a, lead, levels }: { a: A; lead?: L; levels: Lv[] }) {
+function DealerCard({ a, lead, levels }: { a: A; lead: L | undefined; levels: Lv[] }) {
   const qc = useQueryClient(); const [d, setD] = useState(a);
   async function save() { const { error } = await supabase.from('dealer_accounts').update({ manual_level_id: d.manual_level_id, individual_discount_percent: d.individual_discount_percent, admin_notes: d.admin_notes, approved: d.approved, map_enabled: d.map_enabled, city: d.city, map_lat: d.map_lat, map_lng: d.map_lng }).eq('user_id', a.user_id); if (error) toast.error(error.message); else { toast.success('Дилер сохранён'); qc.invalidateQueries({ queryKey: ['admin-dealers'] }); } }
   return <article className="rounded-lg border border-border bg-card p-5 space-y-3">
