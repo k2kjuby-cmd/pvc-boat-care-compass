@@ -20,7 +20,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
-  async function goAfterSignIn() { const {data:{user}}=await supabase.auth.getUser(); if(!user)return;const {data}=await supabase.rpc("has_role",{_user_id:user.id,_role:"admin"}); if(data)nav({to:"/admin"});else {const {data:a}=await supabase.from("dealer_accounts").select("approved").eq("user_id",user.id).maybeSingle();nav({to:a?.approved?"/optovyj-prajs":"/admin"});} }
+  async function goAfterSignIn() { const {data:{user}}=await supabase.auth.getUser(); if(!user)return;const {data}=await supabase.rpc("has_role",{_user_id:user.id,_role:"admin"}); if(data)nav({to:"/admin"});else {const {data:a}=await supabase.from("dealer_accounts").select("approved").eq("user_id",user.id).maybeSingle();nav({to:a?.approved?"/kabinet":"/admin"});} }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => { if (data.session) goAfterSignIn(); });
@@ -48,7 +48,7 @@ function AuthPage() {
     <div className="container-site flex min-h-[70vh] items-center justify-center py-16">
       <div className="w-full max-w-sm rounded-3xl border border-border bg-card p-8">
         <h1 className="text-2xl uppercase">{mode === "in" ? "Вход" : "Регистрация"}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Панель управления сайтом</p>
+        <p className="mt-1 text-sm text-muted-foreground">Кабинет дилера и панель управления</p>
         <form onSubmit={submit} className="mt-6 space-y-4">
           <div className="space-y-2"><Label htmlFor="em">E-mail</Label><Input id="em" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></div>
           <div className="space-y-2"><Label htmlFor="pw">Пароль</Label><Input id="pw" type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} /></div>

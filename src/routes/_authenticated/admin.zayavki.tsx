@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { seo } from "@/lib/site";
+import { useServerFn } from "@tanstack/react-start";
+import { inviteDealer } from "@/lib/dealer.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/zayavki")({ head: () => seo("Заявки и обращения", "Оптовые заявки и сообщения покупателей НеСдует.", "/admin/zayavki"), component: Leads });
 
@@ -24,9 +26,18 @@ function Leads() {
       return data ?? [];
     },
   });
-  async function setStatus(id: string, status: "approved" | "rejected") {
+  const invite = useServerFn(inviteDealer);
+  async function sendInvite(id: string, current: string | null) {
+    const email = (current || window.prompt("E-mail дилера для ссылки на создание пароля") || "").trim();
+    if (!email) return;
+    try { await invite({ data: { leadId: id, email, origin: window.location.origin } }); toast.success("Письмо со ссылкой отправлено"); qc.invalidateQueries(); }
+    catch (e) { toast.error(e instanceof Error ? e.message : "Не удалось отправить письмо"); }
+  }
+  async function setStatus(id: string, status: "approved" | "rejected", email: string | null = null) {
     const { error } = await supabase.from("wholesale_leads").update({ status }).eq("id", id);
-    if (error) toast.error(error.message); else qc.invalidateQueries({ queryKey: ["admin-leads"] });
+    if (error) { toast.error(error.message); return; }
+    qc.invalidateQueries({ queryKey: ["admin-leads"] });
+    if (status === "approved") await sendInvite(id, email);
   }
   return (
     <div>
@@ -40,7 +51,7 @@ function Leads() {
               <span className="text-xs text-muted-foreground">{new Date(l.created_at).toLocaleString("ru-RU")} · {ST[l.status]}</span>
             </div>
             <div className="mt-2 grid gap-1 text-sm text-muted-foreground md:grid-cols-2">
-              <span>{l.name}, {l.phone}</span>
+              <span>{l.name}, {l.phone}{l.email ? `, ${l.email}` : ""}</span>
               <span>{l.messenger_type ? `${l.messenger_type}: ${l.messenger_contact ?? ""}` : ""}</span>
               <span>Тип: {BT[l.business_type] ?? l.business_type}{l.inn ? ` · ИНН ${l.inn}` : ""}</span>
               <span>Источник: {l.source ?? "—"}</span>
@@ -48,9 +59,10 @@ function Leads() {
               {l.sales_links && <span className="md:col-span-2">Площадки: {l.sales_links}</span>}
               {l.comment && <span className="md:col-span-2">Комментарий: {l.comment}</span>}
             </div>
+            {l.status === "approved" && <Button className="mt-3" size="sm" variant="outline" onClick={() => sendInvite(l.id, l.email)}>Отправить ссылку на пароль повторно</Button>}
             {l.status === "new" && (
               <div className="mt-3 flex gap-2">
-                <Button size="sm" onClick={() => setStatus(l.id, "approved")}>Одобрить</Button>
+                <Button size="sm" onClick={() => setStatus(l.id, "approved", l.email)}>Одобрить</Button>
                 <Button size="sm" variant="outline" onClick={() => setStatus(l.id, "rejected")}>Отклонить</Button>
               </div>
             )}
