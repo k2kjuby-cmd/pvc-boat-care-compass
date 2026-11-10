@@ -33,6 +33,7 @@ import { Route as AuthenticatedOptovyjPrajsRouteImport } from './routes/_authent
 import { Route as KatalogIndexRouteImport } from './routes/katalog.index'
 import { Route as KatalogSlugRouteImport } from './routes/katalog.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminDileryRouteImport } from './routes/_authenticated/admin.dilery'
 import { Route as AuthenticatedAdminImportRouteImport } from './routes/_authenticated/admin.import'
 import { Route as AuthenticatedAdminNastrojkiRouteImport } from './routes/_authenticated/admin.nastrojki'
 import { Route as AuthenticatedAdminOptRouteImport } from './routes/_authenticated/admin.opt'
@@ -166,6 +167,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminDileryRoute =
+  AuthenticatedAdminDileryRouteImport.update({
+    id: '/dilery',
+    path: '/dilery',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminImportRoute =
   AuthenticatedAdminImportRouteImport.update({
     id: '/import',
@@ -249,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
+  '/admin/dilery': typeof AuthenticatedAdminDileryRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/nastrojki': typeof AuthenticatedAdminNastrojkiRoute
   '/admin/opt': typeof AuthenticatedAdminOptRoute
@@ -282,6 +290,7 @@ export interface FileRoutesByTo {
   '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog': typeof KatalogIndexRoute
+  '/admin/dilery': typeof AuthenticatedAdminDileryRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/nastrojki': typeof AuthenticatedAdminNastrojkiRoute
   '/admin/opt': typeof AuthenticatedAdminOptRoute
@@ -319,6 +328,7 @@ export interface FileRoutesById {
   '/_authenticated/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
   '/katalog/$slug': typeof KatalogSlugRoute
   '/katalog/': typeof KatalogIndexRoute
+  '/_authenticated/admin/dilery': typeof AuthenticatedAdminDileryRoute
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
   '/_authenticated/admin/nastrojki': typeof AuthenticatedAdminNastrojkiRoute
   '/_authenticated/admin/opt': typeof AuthenticatedAdminOptRoute
@@ -356,6 +366,7 @@ export interface FileRouteTypes {
     | '/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog/'
+    | '/admin/dilery'
     | '/admin/import'
     | '/admin/nastrojki'
     | '/admin/opt'
@@ -389,6 +400,7 @@ export interface FileRouteTypes {
     | '/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog'
+    | '/admin/dilery'
     | '/admin/import'
     | '/admin/nastrojki'
     | '/admin/opt'
@@ -425,6 +437,7 @@ export interface FileRouteTypes {
     | '/_authenticated/optovyj-prajs'
     | '/katalog/$slug'
     | '/katalog/'
+    | '/_authenticated/admin/dilery'
     | '/_authenticated/admin/import'
     | '/_authenticated/admin/nastrojki'
     | '/_authenticated/admin/opt'
@@ -631,6 +644,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/dilery': {
+      id: '/_authenticated/admin/dilery'
+      path: '/dilery'
+      fullPath: '/admin/dilery'
+      preLoaderRoute: typeof AuthenticatedAdminDileryRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/import': {
       id: '/_authenticated/admin/import'
       path: '/import'
@@ -705,6 +725,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminDileryRoute: typeof AuthenticatedAdminDileryRoute
   AuthenticatedAdminImportRoute: typeof AuthenticatedAdminImportRoute
   AuthenticatedAdminNastrojkiRoute: typeof AuthenticatedAdminNastrojkiRoute
   AuthenticatedAdminOptRoute: typeof AuthenticatedAdminOptRoute
@@ -715,6 +736,7 @@ interface AuthenticatedAdminRouteChildren {
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminDileryRoute: AuthenticatedAdminDileryRoute,
   AuthenticatedAdminImportRoute: AuthenticatedAdminImportRoute,
   AuthenticatedAdminNastrojkiRoute: AuthenticatedAdminNastrojkiRoute,
   AuthenticatedAdminOptRoute: AuthenticatedAdminOptRoute,

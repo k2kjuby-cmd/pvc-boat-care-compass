@@ -27,3 +27,4 @@
 - Router SSR dehydrates and hydrates its per-request QueryClient so public settings and catalog render consistently on first load.
 - Cart stores only variant IDs and quantities locally; database RPCs authoritatively quote and atomically snapshot orders with verified request ownership, while private item margins remain admin-only.
 - Checkout provider settings store secret references, never credential values; payments and shipping remain simulated until real adapters are connected.
+- Dealer cabinet lives under `/_authenticated/kabinet`; dealers get access only via admin-sent invite links after lead approval, profile edits go through `dealer_update_profile` and the public map reads only consented+enabled dealers via `public_dealers()` — so dealers cannot change their own access or pricing.

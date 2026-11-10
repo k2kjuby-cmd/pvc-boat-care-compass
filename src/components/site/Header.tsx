@@ -40,6 +40,7 @@ export function Header() {
           <Button asChild size="icon" variant="ghost"><Link to="/korzina" aria-label={`Корзина, ${items.reduce((n,i)=>n+i.quantity,0)} шт.`}><ShoppingCart className="size-4" /></Link></Button>
           {nonEmpty(data?.contact_phone) && <Button asChild size="icon" variant="ghost"><a href={phoneHref(data?.contact_phone ?? "")} aria-label={`Позвонить: ${data?.contact_phone}`} title={data?.contact_phone ?? "Телефон"}><Phone className="size-4" /></a></Button>}
           {max && <Button asChild size="sm" variant="outline" className="hidden sm:inline-flex"><a href={max.url} target="_blank" rel="noopener noreferrer"><MessageCircle className="size-4" />Написать в MAX</a></Button>}
+          <Button asChild size="sm" variant="ghost" className="hidden sm:inline-flex"><Link to="/kabinet">Кабинет дилера</Link></Button>
           <Button asChild size="sm" className="hidden sm:inline-flex shadow-glow">
             <Link to="/optovikam" hash="zayavka">Оптовый прайс</Link>
           </Button>
