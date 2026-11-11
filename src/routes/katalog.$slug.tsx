@@ -4,6 +4,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ShoppingCart, ExternalLink, AlertTriangle, Timer } from "lucide-react";
 import { PageShell } from "@/components/site/PageShell";
+import { VideoPlayer } from "@/components/site/VideoPlayer";
+import { parseVideo } from "@/lib/video";
 import { ProductCard, LineBadge, ImagePlaceholder } from "@/components/catalog/ProductCard";
 import { StepIcon } from "@/components/catalog/StepIcon";
 import { DilutionCalc } from "@/components/catalog/DilutionCalc";
@@ -47,16 +49,6 @@ const MARKETS = [
   { key: "yandex_market_url", name: "Яндекс Маркет" },
 ] as const;
 
-function safeEmbed(url: string | null) {
-  if (!url) return null;
-  try {
-    const u = new URL(url);
-    return u.protocol === "https:" ? u.toString() : null;
-  } catch {
-    return null;
-  }
-}
-
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-14">
@@ -87,7 +79,7 @@ function ProductPage() {
   const packaging = visibleImages.filter((i) => i.kind === "label" || i.kind === "package");
   const markets = v ? MARKETS.filter((m) => v[m.key]) : [];
   const isSoon = p.status === "soon";
-  const video = safeEmbed(p.video_url);
+  const video = parseVideo(p.video_url);
   const suitable = PRODUCT_TYPES.filter((t) => p.suitable_for.includes(t.value));
   const crumbs = [{ label: "Каталог", to: "/katalog" }, ...(p.category ? [{ label: p.category.name, to: "/katalog", search: { zadacha: p.category.slug } }] : []), { label: p.name }];
 
@@ -187,7 +179,9 @@ function ProductPage() {
 
       {p.usage_steps.length > 0 && (
         <Section title="Как применять">
-          <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {video?.vertical ? (
+            <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+              <ol className="grid gap-4 md:grid-cols-2">
             {p.usage_steps.map((s, i) => (
               <li key={i} className="rounded-2xl border border-border bg-surface p-6">
                 <div className="flex items-center justify-between">
@@ -199,6 +193,22 @@ function ProductPage() {
               </li>
             ))}
           </ol>
+              <VideoPlayer video={video} title={`Видео: ${p.name}`} />
+            </div>
+          ) : (
+            <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {p.usage_steps.map((s, i) => (
+              <li key={i} className="rounded-2xl border border-border bg-surface p-6">
+                <div className="flex items-center justify-between">
+                  <StepIcon name={s.icon} className="h-8 w-8 text-primary" />
+                  <span className="font-display text-3xl text-foreground/15">{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <h3 className="mt-4 text-lg">{s.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
+              </li>
+            ))}
+          </ol>
+          )}
         </Section>
       )}
 
@@ -259,11 +269,9 @@ function ProductPage() {
         </Section>
       )}
 
-      {video && (
+      {video && !(video.vertical && p.usage_steps.length > 0) && (
         <Section title="Видео">
-          <div className="aspect-video overflow-hidden rounded-2xl bg-surface">
-            <iframe src={video} title={`Видео: ${p.name}`} className="h-full w-full" loading="lazy" allowFullScreen allow="encrypted-media; picture-in-picture" sandbox="allow-scripts allow-same-origin allow-presentation" />
-          </div>
+          <div className="max-w-4xl"><VideoPlayer video={video} title={`Видео: ${p.name}`} /></div>
         </Section>
       )}
 

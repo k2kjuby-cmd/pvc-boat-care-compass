@@ -244,7 +244,7 @@ function Editor() {
           <F label="Предупреждения и ограничения"><Textarea rows={3} value={p.warnings ?? ""} onChange={txt("warnings")} placeholder={TBA} /></F>
           <F label="Состав"><Textarea rows={2} value={p.composition ?? ""} onChange={txt("composition")} placeholder={TBA} /></F>
           <F label="Срок выдержки"><Input value={p.cure_time ?? ""} onChange={txt("cure_time")} placeholder={TBA} /></F>
-          <F label="Видео (ссылка для встраивания, https)"><Input value={p.video_url ?? ""} onChange={txt("video_url")} placeholder="https://rutube.ru/play/embed/…" /></F>
+          <F label="Ссылка на видео (VK Видео, Rutube, YouTube)"><Input value={p.video_url ?? ""} onChange={txt("video_url")} placeholder="https://rutube.ru/video/…" /></F>
         </div>
       </Block>
 
