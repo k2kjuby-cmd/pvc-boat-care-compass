@@ -50,6 +50,13 @@
       "when": 1794251106655,
       "tag": "0006_dealer_cabinet",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794426080227,
+      "tag": "0007_articles",
+      "breakpoints": true
     }
   ]
 }

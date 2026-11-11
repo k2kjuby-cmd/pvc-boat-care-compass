@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DileryRouteImport } from './routes/dilery'
-import { Route as DlyaMasterskihRouteImport } from './routes/dlya-masterskih'
 import { Route as DostavkaIOplataRouteImport } from './routes/dostavka-i-oplata'
 import { Route as GdeKupitRouteImport } from './routes/gde-kupit'
 import { Route as KalkulyatorRazvedeniyaRouteImport } from './routes/kalkulyator-razvedeniya'
@@ -30,6 +29,8 @@ import { Route as SozdatParolRouteImport } from './routes/sozdat-parol'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedKabinetRouteImport } from './routes/_authenticated/kabinet'
 import { Route as AuthenticatedOptovyjPrajsRouteImport } from './routes/_authenticated/optovyj-prajs'
+import { Route as DlyaMasterskihIndexRouteImport } from './routes/dlya-masterskih.index'
+import { Route as DlyaMasterskihSlugRouteImport } from './routes/dlya-masterskih.$slug'
 import { Route as KatalogIndexRouteImport } from './routes/katalog.index'
 import { Route as KatalogSlugRouteImport } from './routes/katalog.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
@@ -43,6 +44,7 @@ import { Route as AuthenticatedKabinetIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedKabinetMaterialyRouteImport } from './routes/_authenticated/kabinet.materialy'
 import { Route as AuthenticatedKabinetProfilRouteImport } from './routes/_authenticated/kabinet.profil'
 import { Route as AuthenticatedKabinetZakazyRouteImport } from './routes/_authenticated/kabinet.zakazy'
+import { Route as DlyaMasterskihRubrikaRubricRouteImport } from './routes/dlya-masterskih.rubrika.$rubric'
 import { Route as AuthenticatedAdminTovarIdRouteImport } from './routes/_authenticated/admin.tovar.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -62,11 +64,6 @@ const AuthRoute = AuthRouteImport.update({
 const DileryRoute = DileryRouteImport.update({
   id: '/dilery',
   path: '/dilery',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DlyaMasterskihRoute = DlyaMasterskihRouteImport.update({
-  id: '/dlya-masterskih',
-  path: '/dlya-masterskih',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DostavkaIOplataRoute = DostavkaIOplataRouteImport.update({
@@ -152,6 +149,16 @@ const AuthenticatedOptovyjPrajsRoute =
     path: '/optovyj-prajs',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const DlyaMasterskihIndexRoute = DlyaMasterskihIndexRouteImport.update({
+  id: '/dlya-masterskih/',
+  path: '/dlya-masterskih/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DlyaMasterskihSlugRoute = DlyaMasterskihSlugRouteImport.update({
+  id: '/dlya-masterskih/$slug',
+  path: '/dlya-masterskih/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KatalogIndexRoute = KatalogIndexRouteImport.update({
   id: '/katalog/',
   path: '/katalog/',
@@ -226,6 +233,12 @@ const AuthenticatedKabinetZakazyRoute =
     path: '/zakazy',
     getParentRoute: () => AuthenticatedKabinetRoute,
   } as any)
+const DlyaMasterskihRubrikaRubricRoute =
+  DlyaMasterskihRubrikaRubricRouteImport.update({
+    id: '/dlya-masterskih/rubrika/$rubric',
+    path: '/dlya-masterskih/rubrika/$rubric',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedAdminTovarIdRoute =
   AuthenticatedAdminTovarIdRouteImport.update({
     id: '/tovar/$id',
@@ -237,7 +250,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dilery': typeof DileryRoute
-  '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
   '/gde-kupit': typeof GdeKupitRoute
   '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
@@ -254,7 +266,9 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/kabinet': typeof AuthenticatedKabinetRouteWithChildren
   '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
+  '/dlya-masterskih/$slug': typeof DlyaMasterskihSlugRoute
   '/katalog/$slug': typeof KatalogSlugRoute
+  '/dlya-masterskih/': typeof DlyaMasterskihIndexRoute
   '/katalog/': typeof KatalogIndexRoute
   '/admin/dilery': typeof AuthenticatedAdminDileryRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
@@ -265,6 +279,7 @@ export interface FileRoutesByFullPath {
   '/kabinet/materialy': typeof AuthenticatedKabinetMaterialyRoute
   '/kabinet/profil': typeof AuthenticatedKabinetProfilRoute
   '/kabinet/zakazy': typeof AuthenticatedKabinetZakazyRoute
+  '/dlya-masterskih/rubrika/$rubric': typeof DlyaMasterskihRubrikaRubricRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/kabinet/': typeof AuthenticatedKabinetIndexRoute
   '/admin/tovar/$id': typeof AuthenticatedAdminTovarIdRoute
@@ -273,7 +288,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dilery': typeof DileryRoute
-  '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
   '/gde-kupit': typeof GdeKupitRoute
   '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
@@ -288,7 +302,9 @@ export interface FileRoutesByTo {
   '/skoro': typeof SkoroRoute
   '/sozdat-parol': typeof SozdatParolRoute
   '/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
+  '/dlya-masterskih/$slug': typeof DlyaMasterskihSlugRoute
   '/katalog/$slug': typeof KatalogSlugRoute
+  '/dlya-masterskih': typeof DlyaMasterskihIndexRoute
   '/katalog': typeof KatalogIndexRoute
   '/admin/dilery': typeof AuthenticatedAdminDileryRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
@@ -299,6 +315,7 @@ export interface FileRoutesByTo {
   '/kabinet/materialy': typeof AuthenticatedKabinetMaterialyRoute
   '/kabinet/profil': typeof AuthenticatedKabinetProfilRoute
   '/kabinet/zakazy': typeof AuthenticatedKabinetZakazyRoute
+  '/dlya-masterskih/rubrika/$rubric': typeof DlyaMasterskihRubrikaRubricRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/kabinet': typeof AuthenticatedKabinetIndexRoute
   '/admin/tovar/$id': typeof AuthenticatedAdminTovarIdRoute
@@ -309,7 +326,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/dilery': typeof DileryRoute
-  '/dlya-masterskih': typeof DlyaMasterskihRoute
   '/dostavka-i-oplata': typeof DostavkaIOplataRoute
   '/gde-kupit': typeof GdeKupitRoute
   '/kalkulyator-razvedeniya': typeof KalkulyatorRazvedeniyaRoute
@@ -326,7 +342,9 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/kabinet': typeof AuthenticatedKabinetRouteWithChildren
   '/_authenticated/optovyj-prajs': typeof AuthenticatedOptovyjPrajsRoute
+  '/dlya-masterskih/$slug': typeof DlyaMasterskihSlugRoute
   '/katalog/$slug': typeof KatalogSlugRoute
+  '/dlya-masterskih/': typeof DlyaMasterskihIndexRoute
   '/katalog/': typeof KatalogIndexRoute
   '/_authenticated/admin/dilery': typeof AuthenticatedAdminDileryRoute
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
@@ -337,6 +355,7 @@ export interface FileRoutesById {
   '/_authenticated/kabinet/materialy': typeof AuthenticatedKabinetMaterialyRoute
   '/_authenticated/kabinet/profil': typeof AuthenticatedKabinetProfilRoute
   '/_authenticated/kabinet/zakazy': typeof AuthenticatedKabinetZakazyRoute
+  '/dlya-masterskih/rubrika/$rubric': typeof DlyaMasterskihRubrikaRubricRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/kabinet/': typeof AuthenticatedKabinetIndexRoute
   '/_authenticated/admin/tovar/$id': typeof AuthenticatedAdminTovarIdRoute
@@ -347,7 +366,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dilery'
-    | '/dlya-masterskih'
     | '/dostavka-i-oplata'
     | '/gde-kupit'
     | '/kalkulyator-razvedeniya'
@@ -364,7 +382,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/kabinet'
     | '/optovyj-prajs'
+    | '/dlya-masterskih/$slug'
     | '/katalog/$slug'
+    | '/dlya-masterskih/'
     | '/katalog/'
     | '/admin/dilery'
     | '/admin/import'
@@ -375,6 +395,7 @@ export interface FileRouteTypes {
     | '/kabinet/materialy'
     | '/kabinet/profil'
     | '/kabinet/zakazy'
+    | '/dlya-masterskih/rubrika/$rubric'
     | '/admin/'
     | '/kabinet/'
     | '/admin/tovar/$id'
@@ -383,7 +404,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dilery'
-    | '/dlya-masterskih'
     | '/dostavka-i-oplata'
     | '/gde-kupit'
     | '/kalkulyator-razvedeniya'
@@ -398,7 +418,9 @@ export interface FileRouteTypes {
     | '/skoro'
     | '/sozdat-parol'
     | '/optovyj-prajs'
+    | '/dlya-masterskih/$slug'
     | '/katalog/$slug'
+    | '/dlya-masterskih'
     | '/katalog'
     | '/admin/dilery'
     | '/admin/import'
@@ -409,6 +431,7 @@ export interface FileRouteTypes {
     | '/kabinet/materialy'
     | '/kabinet/profil'
     | '/kabinet/zakazy'
+    | '/dlya-masterskih/rubrika/$rubric'
     | '/admin'
     | '/kabinet'
     | '/admin/tovar/$id'
@@ -418,7 +441,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/dilery'
-    | '/dlya-masterskih'
     | '/dostavka-i-oplata'
     | '/gde-kupit'
     | '/kalkulyator-razvedeniya'
@@ -435,7 +457,9 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/kabinet'
     | '/_authenticated/optovyj-prajs'
+    | '/dlya-masterskih/$slug'
     | '/katalog/$slug'
+    | '/dlya-masterskih/'
     | '/katalog/'
     | '/_authenticated/admin/dilery'
     | '/_authenticated/admin/import'
@@ -446,6 +470,7 @@ export interface FileRouteTypes {
     | '/_authenticated/kabinet/materialy'
     | '/_authenticated/kabinet/profil'
     | '/_authenticated/kabinet/zakazy'
+    | '/dlya-masterskih/rubrika/$rubric'
     | '/_authenticated/admin/'
     | '/_authenticated/kabinet/'
     | '/_authenticated/admin/tovar/$id'
@@ -456,7 +481,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   DileryRoute: typeof DileryRoute
-  DlyaMasterskihRoute: typeof DlyaMasterskihRoute
   DostavkaIOplataRoute: typeof DostavkaIOplataRoute
   GdeKupitRoute: typeof GdeKupitRoute
   KalkulyatorRazvedeniyaRoute: typeof KalkulyatorRazvedeniyaRoute
@@ -470,8 +494,11 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SkoroRoute: typeof SkoroRoute
   SozdatParolRoute: typeof SozdatParolRoute
+  DlyaMasterskihSlugRoute: typeof DlyaMasterskihSlugRoute
   KatalogSlugRoute: typeof KatalogSlugRoute
+  DlyaMasterskihIndexRoute: typeof DlyaMasterskihIndexRoute
   KatalogIndexRoute: typeof KatalogIndexRoute
+  DlyaMasterskihRubrikaRubricRoute: typeof DlyaMasterskihRubrikaRubricRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -502,13 +529,6 @@ declare module '@tanstack/react-router' {
       path: '/dilery'
       fullPath: '/dilery'
       preLoaderRoute: typeof DileryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dlya-masterskih': {
-      id: '/dlya-masterskih'
-      path: '/dlya-masterskih'
-      fullPath: '/dlya-masterskih'
-      preLoaderRoute: typeof DlyaMasterskihRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dostavka-i-oplata': {
@@ -623,6 +643,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOptovyjPrajsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/dlya-masterskih/': {
+      id: '/dlya-masterskih/'
+      path: '/dlya-masterskih'
+      fullPath: '/dlya-masterskih/'
+      preLoaderRoute: typeof DlyaMasterskihIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dlya-masterskih/$slug': {
+      id: '/dlya-masterskih/$slug'
+      path: '/dlya-masterskih/$slug'
+      fullPath: '/dlya-masterskih/$slug'
+      preLoaderRoute: typeof DlyaMasterskihSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/katalog/': {
       id: '/katalog/'
       path: '/katalog'
@@ -714,6 +748,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedKabinetZakazyRouteImport
       parentRoute: typeof AuthenticatedKabinetRoute
     }
+    '/dlya-masterskih/rubrika/$rubric': {
+      id: '/dlya-masterskih/rubrika/$rubric'
+      path: '/dlya-masterskih/rubrika/$rubric'
+      fullPath: '/dlya-masterskih/rubrika/$rubric'
+      preLoaderRoute: typeof DlyaMasterskihRubrikaRubricRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/tovar/$id': {
       id: '/_authenticated/admin/tovar/$id'
       path: '/tovar/$id'
@@ -786,7 +827,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   DileryRoute: DileryRoute,
-  DlyaMasterskihRoute: DlyaMasterskihRoute,
   DostavkaIOplataRoute: DostavkaIOplataRoute,
   GdeKupitRoute: GdeKupitRoute,
   KalkulyatorRazvedeniyaRoute: KalkulyatorRazvedeniyaRoute,
@@ -800,8 +840,11 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SkoroRoute: SkoroRoute,
   SozdatParolRoute: SozdatParolRoute,
+  DlyaMasterskihSlugRoute: DlyaMasterskihSlugRoute,
   KatalogSlugRoute: KatalogSlugRoute,
+  DlyaMasterskihIndexRoute: DlyaMasterskihIndexRoute,
   KatalogIndexRoute: KatalogIndexRoute,
+  DlyaMasterskihRubrikaRubricRoute: DlyaMasterskihRubrikaRubricRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

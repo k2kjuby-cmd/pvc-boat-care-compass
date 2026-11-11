@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import type { Database } from "@/integrations/supabase/types";
 
-function pub() {
+export function pub() {
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
   return createClient<Database>(process.env["SUPABASE_URL"]!, key, {
     auth: { persistSession: false, autoRefreshToken: false, storage: undefined },
@@ -26,9 +26,9 @@ export type CardProduct = {
   minPrice: number | null; volumes: number[]; image: string | null;
 };
 
-const CARD_SELECT = "id,slug,name,short_description,status,is_hit,suitable_for,sort,product_lines(name,color),categories(slug,name),product_variants(volume_ml,price,image_url,sort),product_images(url,kind,sort)";
+export const CARD_SELECT = "id,slug,name,short_description,status,is_hit,suitable_for,sort,product_lines(name,color),categories(slug,name),product_variants(volume_ml,price,image_url,sort),product_images(url,kind,sort)";
 
-type RawCard = {
+export type RawCard = {
   id: string; slug: string; name: string; short_description: string | null; status: CardProduct["status"]; is_hit: boolean; suitable_for: string[];
   product_lines: { name: string; color: string } | null;
   categories: { slug: string; name: string } | null;
@@ -36,7 +36,7 @@ type RawCard = {
   product_images: { url: string; kind: string; sort: number }[];
 };
 
-function toCard(r: RawCard): CardProduct {
+export function toCard(r: RawCard): CardProduct {
   const prices = r.product_variants.map((v) => v.price).filter((p): p is number => p != null);
   const photos = [...r.product_images].filter((i) => i.kind === "photo").sort((a, b) => a.sort - b.sort);
   return {
